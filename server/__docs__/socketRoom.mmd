@@ -1,0 +1,31 @@
+sequenceDiagram
+    actor User
+    participant Client
+    participant Server
+    participant FirebaseDB
+    participant OpenAI
+
+    User->>Client: Login with credentials
+    Client->>Server: REQ: User Login
+    Server-->>FirebaseDB: REQ: Authenticate Login
+    FirebaseDB-->>Server: RES: User Data { user, roomId, autoreply }
+    Server-->>Client: RES: { access_token, roomId, autoreply }
+    Client->>Server: Initialize socket with access_token
+    Server-->>Client: Socket connection established
+    Client->>Server: socket.on: Join room with roomId
+    Server-->>Client: Socket: Joined room successfully
+    Client->>Server: socket.on: Send message
+    Server->>Server: Check autoreply value
+    alt if autoreply is true
+        Server-->>FirebaseDB: REQ: chatHistory ( session params )
+        FirebaseDB-->>Server: RES: queried chatHistory
+        Server-->>OpenAI: REQ: Prompt ( chatHistory, userMsg )
+        OpenAI-->>Server: RES: GPT Model Reply
+        Server->>Client: socket.on: GPT Model Reply
+    else autoreply is false
+        Server->>Client: socket.on: Reply message to room
+    end
+    Server->>FirebaseDB: REQ: Insert new chatHistory
+    User->>Client: Logout
+    Client->>Server: Socket: Close connection
+    Server-->>Client: Socket: Connection closed
