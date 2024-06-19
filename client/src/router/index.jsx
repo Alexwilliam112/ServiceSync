@@ -3,12 +3,13 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import Toastify from 'toastify-js';
 import BaseLayout from "../layouts/BaseLayout.jsx";
 import Template from "../views/Template.jsx";
+import LoginPage from "../views/LoginPage.jsx";
 
 const url = 'http://localhost:3000'
 const router = createBrowserRouter([
     {
         path: "/login",
-        element: < Template url={url} />
+        element: < LoginPage url={url} />
     },
     {
         element: <BaseLayout />,
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
             }
 
             return null
-        },
+        },  
         children: [
             {
                 path: "/path1",
