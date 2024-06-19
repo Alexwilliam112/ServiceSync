@@ -4,20 +4,19 @@ const db = require('../../config/firebaseConfig')
 
 module.exports = (() => {
     class MessageModel {
-        static async create({ userFrom, userTo, message }) {
+        static async create({ username, message, roomId }) {
             return await db.collection('Messages').add({
-                userFrom,
-                userTo,
+                username,
                 message,
+                roomId,
                 timestamp: admin.firestore.FieldValue.serverTimestamp(),
             });
         }
 
-        static async read({ userFrom, userTo }) {
+        static async read({ roomId }) {
             const messagesRef = db.collection('Messages');
             const snapshot = await messagesRef
-                .where('userFrom', '==', userFrom)
-                .where('userTo', '==', userTo)
+                .where('roomId', '==', Number(roomId))
                 .get();
 
             if (snapshot.empty) {
