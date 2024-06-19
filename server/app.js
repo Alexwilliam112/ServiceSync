@@ -20,6 +20,7 @@ app.use(express.json())
 app.use(bodyParser.json())
 
 app.use(router)
+console.log(`MAsuk app`);
 initializeSocket(httpServer)
 
 module.exports = httpServer
