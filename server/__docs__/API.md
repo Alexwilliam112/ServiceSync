@@ -81,6 +81,14 @@
 
 ## POST /cases
 
+### header:
+
+```json
+{
+  "Authorization": "Bearer <access_token>"
+}
+```
+
 > __Response (201 - CREATED)__
 
 ```json
