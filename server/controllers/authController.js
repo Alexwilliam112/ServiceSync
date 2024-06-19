@@ -24,12 +24,7 @@ module.exports = (() => {
                 const userData = await User.findOne({
                     where: {
                         username
-                    },
-                    include: [
-                        {
-                            model: Case
-                        }
-                    ]
+                    }
                 })
 
                 const access_token = signToken({
@@ -41,8 +36,7 @@ module.exports = (() => {
                 res.status(200).json({
                     access_token,
                     username: userData.username,
-                    role: userData.role,
-                    cases: userData.Cases
+                    role: userData.role
                 })
 
             } catch (err) {

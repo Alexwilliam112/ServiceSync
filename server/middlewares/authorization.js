@@ -4,8 +4,15 @@ const { User } = require('../models')
 module.exports = (() => {
     class Authorization {
 
-        static async solveCase(req, res, next) {
+        static async adminAuth(req, res, next) {
+            try {
+                const { role } = req.loginInfo
+                if (role !== 'admin') throw { name: 'Unauthorized' }
+                next()
 
+            } catch (err) {
+                next(err)
+            }
         }
     }
 
