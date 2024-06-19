@@ -18,7 +18,7 @@ const initializeSocket = (server) => {
         });
 
         socket.on('chatMessage', ({ room, message }) => {
-            io.to(room).emit('chatMessage', message);
+            socket.broadcast.to(room).emit('chatMessage', message);
         });
 
         socket.on('disconnect', () => {
