@@ -20,6 +20,11 @@ module.exports = {
             status = 400
             message = 'Invalid Data Type'
         }
+        
+        if(err.name === 'Login400') {
+            status = 400
+            message = 'Username and Password is required'
+        }
 
         if(err.name === 'SequelizeUniqueConstraintError') {
             status = 400
@@ -28,12 +33,12 @@ module.exports = {
 
         if(err.name === 'Unauthorized') {
             status = 401
-            message = 'Invalid token'
+            message = 'Unauthorized Access. Please LogIn'
         }
 
         if(err.name === 'AccountNotFound') {
             status = 401
-            message = 'Invalid email/password'
+            message = 'Invalid username or password'
         }
 
         if(err.name === 'JsonWebTokenError') {
@@ -43,7 +48,7 @@ module.exports = {
 
         if(err.name === 'Forbidden') {
             status = 403
-            message = 'You are not authorized'
+            message = 'You are not authorized!'
         }
 
         if(err.name === 'NotFound') {
