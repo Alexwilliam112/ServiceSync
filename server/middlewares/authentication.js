@@ -1,6 +1,6 @@
 'use strict'
 const { verifyToken } = require('../helpers/jwt')
-const { User } = require('../models')
+
 module.exports = {
     authentication: async (req, res, next) => {
         try {
@@ -9,10 +9,10 @@ module.exports = {
 
             const access_token = authorization.split(' ')[1]
             const payload = verifyToken(access_token)
-            const user = await User.findByPk(payload.id)
 
             req.loginInfo = {
                 id: user.id,
+                user: user.userName,
                 email: user.email
             }
             next()
