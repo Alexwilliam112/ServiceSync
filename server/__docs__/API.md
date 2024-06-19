@@ -79,7 +79,33 @@
 }
 ```
 
-## GET /cases/:userId
+## POST /cases
+
+> __Response (201 - CREATED)__
+
+```json
+{
+  "message": "Success Create New Room",
+  "data": {
+    "status": true,
+    "autoreply": true,
+    "id": 3,
+    "userId": 2,
+    "updatedAt": "2024-06-19T12:23:45.676Z",
+    "createdAt": "2024-06-19T12:23:45.676Z"
+  }
+}
+```
+
+> __Response (401 - UNAUTHORIZED)__
+
+```json
+{
+  "message": "Unauthorized Access. Please LogIn"
+}
+```
+
+## GET /cases
 
 ### header:
 
@@ -89,18 +115,11 @@
 }
 ```
 
-### params:
-
-```json
-{
-  "userId": "User ID"
-}
-```
-
 > __Response (200 - OK)__
 
 ```json
 {
+  "message": "Success Read All Rooms",
   "data": [
     {
       "roomId": 1,
