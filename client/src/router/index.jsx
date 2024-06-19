@@ -12,41 +12,42 @@ const socket = io("http://localhost:3001", {
 const router = createBrowserRouter([
     {
         path: "/login",
-        element: < LoginPage url={url} />
+        element: < LoginPage url={url} />,
+        loader: () => {
+            if(localStorage.access_token) return redirect("/chat")
+                
+            return null
+        }
     },
     {
         element: <BaseLayout />,
-        // loader: () => {
-        //     if (!localStorage.access_token) {
-        //         Toastify({
-        //             text: "Please log in first",
-        //             duration: 2000,
-        //             newWindow: true,
-        //             close: true,
-        //             gravity: "bottom",
-        //             position: "right",
-        //             stopOnFocus: true,
-        //             style: {
-        //                 background: "#EF4C54",
-        //                 color: "#17202A",
-        //                 boxShadow: "0 5px 10px black",
-        //                 fontWeight: "bold"
-        //             }
-        //         }).showToast();
-        //         return redirect('/login')
-        //     }
+        loader: () => {
+            if (!localStorage.access_token) {
+                Toastify({
+                    text: "Please login first",
+                    duration: 2000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "bottom",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "#EF4C54",
+                        color: "#17202A",
+                        boxShadow: "0 5px 10px black",
+                        fontWeight: "bold"
+                    }
+                }).showToast();
+                return redirect('/login')
+            }
 
-            // return null
-        // },  
+            return null
+        },  
         children: [
             {
                 path: "/chat",
                 element: < ChatPage socket={socket} />
-            },
-            // {
-            //     path: "/path2",
-            //     element: < Template url={url} />
-            // }
+            }
         ]
     }
 ]);

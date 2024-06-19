@@ -19,19 +19,19 @@ export default function LoginPage({url}) {
       navigate("/chat");
     } catch (error) {
         console.log(error);
-    //   Toastify({
-    //     text: error.response.data,
-    //     duration: 3000,
-    //     newWindow: true,
-    //     close: true,
-    //     gravity: "bottom",
-    //     position: "right",
-    //     stopOnFocus: true,
-    //     style: {
-    //       background: "linear-gradient(to right, #000000  , #ff0000)",
-    //     },
-    //     onClick: function () {},
-    //   }).showToast();
+      Toastify({
+        text: error.response.data.message,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "bottom",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+          background: "linear-gradient(to right, #000000  , #ff0000)",
+        },
+        onClick: function () {},
+      }).showToast();
     }
   }
 
