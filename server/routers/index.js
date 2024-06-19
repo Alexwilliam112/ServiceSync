@@ -8,7 +8,8 @@ const ChatController = require('../controllers/chatController.js')
 router.post("/login", AuthController.handleLogin)
 router.post("/google-login", AuthController.googleOauth)
 
-router.post('/chat-post', ChatController.postChat)
+router.get('/cases/:userId', ChatController.readCases)
+router.post('/chat-post', ChatController.postChat) // ENDPOINT FOR TESTING
 router.get('/chat-history/:roomId', ChatController.readChat)
 
 router.use(authentication)

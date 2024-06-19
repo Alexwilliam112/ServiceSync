@@ -11,7 +11,7 @@ module.exports = (() => {
         static async handleLogin(req, res, next) {
             try {
                 const { username, password } = req.body
-                if (!username || !password) throw { name: "AccountNotFound" }
+                if (!username || !password) throw { name: "Login400" }
 
                 const user = await User.findOne({
                     where: {
