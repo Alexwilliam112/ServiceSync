@@ -7,7 +7,7 @@ const ChatController = require('../controllers/chatController.js')
 
 
 router.post('/chat-test', ChatController.storeChat)
-
+router.get('/chat-history/:user',ChatController.readChat)
 
 router.use(authentication)
 

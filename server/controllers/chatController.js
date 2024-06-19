@@ -1,24 +1,24 @@
 'use strict'
-const db = require('../config/firebaseConfig')
-const admin = require('firebase-admin')
+const MessageModel = require('../models/firebase/messageClass')
 
 module.exports = (() => {
     class ChatController {
-        
-        static async storeChat(req, res, next) {
+
+        static async readChat(req, res, next) {
             try {
-                const { user, message } = req.body
+                const userFrom = 'Alex'
+                const userTo = 'admin'
 
-                await db.collection('messages').add({
-                    user,
-                    message,
-                    timestamp: admin.firestore.FieldValue.serverTimestamp(),
-                })
+                const messages = await MessageModel.read({ userFrom, userTo })
 
-                res.status(201).send('Message added');
+                if (!messages) {
+                    res.status(404).send('empty');
+                    return;
+                }
+
+                res.status(200).json(messages);
 
             } catch (err) {
-                console.log(err);
                 next(err)
             }
         }
