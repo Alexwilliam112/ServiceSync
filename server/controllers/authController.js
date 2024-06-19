@@ -1,10 +1,10 @@
 'use strict'
 
 class AuthController {
-    
+
     static async handleLogin(req, res, next) {
         try {
-            
+
 
         } catch (err) {
             next(err)
@@ -13,8 +13,8 @@ class AuthController {
 
     static async handleRegister(req, res, next) {
         try {
-            
-            
+
+
         } catch (err) {
             next(err)
         }

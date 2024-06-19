@@ -7,8 +7,6 @@ const MainController = require('../controllers/mainController.js')
 
 router.use(authentication)
 
-
-
 router.use(errorHandler)
 
 module.exports = router
