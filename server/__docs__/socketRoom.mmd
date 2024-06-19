@@ -21,9 +21,9 @@ sequenceDiagram
         FirebaseDB-->>Server: RES: queried chatHistory
         Server-->>OpenAI: REQ: Prompt ( chatHistory, userMsg )
         OpenAI-->>Server: RES: GPT Model Reply
-        Server->>Client: socket.on: GPT Model Reply
+        Server->>Client: GPT Model Reply: socket.broadcast.to
     else autoreply is false
-        Server->>Client: socket.on: Reply message to room
+        Server->>Client: Human Reply to Room: socket.broadcast.to
     end
     Server->>FirebaseDB: REQ: Insert new chatHistory
     User->>Client: Logout
