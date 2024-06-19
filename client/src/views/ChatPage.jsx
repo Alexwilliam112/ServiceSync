@@ -6,17 +6,25 @@ import Toastify from "toastify-js";
 export default function ChatPage({ socket }) {
   const [messageSent, setMessageSent] = useState("");
   const [messages, setMessages] = useState([]);
-  // const [room, setRoom] = useState("defaultRoom");
+  const [room, setRoom] = useState("defaultRoom");
   const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
-    socket.emit("message:new", { message: messageSent });
-    setMessageSent(""); // Clear the message input after sending
+    if (messageSent.trim() !== "") {
+      socket.emit("message:new", { message: messageSent, room }); // Include room
+      setMessageSent(""); // Clear the message input after sending
+    }
   }
 
   useEffect(() => {
+    socket.auth = {
+      username: localStorage.username,
+    };
+
     socket.connect();
+
+    socket.emit("joinRoom", { room });
 
     socket.on("message:update", (newMessage) => {
       setMessages((current) => {
@@ -28,18 +36,43 @@ export default function ChatPage({ socket }) {
       socket.off("message:update");
       socket.disconnect();
     };
-  }, []);
+  }, [room]);
+
+  const handleRoomChange = (newRoom) => {
+    setMessages([]); // Clear messages when switching rooms
+    setRoom(newRoom);
+    socket.emit("joinRoom", { room: newRoom });
+    console.log(room)
+  };
 
   return (
     <div className="container mx-auto rounded-lg shadow-lg">
-      <div className="flex items-center justify-between border-b-2 bg-white px-5 py-5">
-        <div className="text-2xl font-semibold">ServiceSync</div>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500 p-2 font-semibold text-white">
-          T
-        </div>
-      </div>
       <div className="flex flex-row justify-between bg-white">
         <div className="flex w-2/5 flex-col overflow-y-auto border-r-2">
+        <div className={room !== "defaultRoom"? 
+          "flex flex-row items-center justify-center border-b-2 px-2 py-4 cursor-pointer" 
+          :
+          "flex flex-row items-center justify-center border-b-2 border-l-4 border-blue-400 px-2 py-4 cursor-pointer"
+          }
+          onClick={() => handleRoomChange("defaultRoom")}>
+            <div className="w-1/4">
+              <img src={userIcon} className="h-12 w-12 rounded-full object-cover" alt="" />
+            </div>
+            <div className="w-full">
+              <div className="text-lg font-semibold">Default Room</div>
+              <span className="text-gray-500">Welcome to Default Room</span>
+            </div>
+          </div>
+          <div className="flex flex-row items-center border-b-2 px-2 py-4 cursor-pointer" onClick={() => handleRoomChange("room1")}>
+            <div className="w-1/4">
+              <img src={userIcon} className="h-12 w-12 rounded-full object-cover" alt="" />
+            </div>
+            <div className="w-full">
+              <div className="text-lg font-semibold">Room 1</div>
+              <span className="text-gray-500">Room 1 messages here</span>
+            </div>
+          </div>
+
           <div className="flex flex-row items-center justify-center border-b-2 px-2 py-4">
             <div className="w-1/4">
               <img
@@ -66,7 +99,7 @@ export default function ChatPage({ socket }) {
               <span className="text-gray-500">Hi Sam, Welcome</span>
             </div>
           </div>
-          <div className="flex flex-row items-center border-b-2 border-l-4 border-blue-400 px-2 py-4">
+          <div className="flex flex-row items-center border-b-2 px-2 py-4">
             <div className="w-1/4">
               <img
                 src={userIcon}
@@ -94,85 +127,49 @@ export default function ChatPage({ socket }) {
               </span>
             </div>
           </div>
-          <div className="flex flex-row items-center border-b-2 px-2 py-4">
-            <div className="w-1/4">
-              <img
-                src={userIcon}
-                className="h-12 w-12 rounded-full object-cover"
-                alt=""
-              />
-            </div>
-            <div className="w-full">
-              <div className="text-lg font-semibold">Javascript Indonesia</div>
-              <span className="text-gray-500">
-                Evan : some one can fix this
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-row items-center border-b-2 px-2 py-4">
-            <div className="w-1/4">
-              <img
-                src={userIcon}
-                className="h-12 w-12 rounded-full object-cover"
-                alt=""
-              />
-            </div>
-            <div className="w-full">
-              <div className="text-lg font-semibold">Javascript Indonesia</div>
-              <span className="text-gray-500">
-                Evan : some one can fix this
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-row items-center border-b-2 px-2 py-4">
-            <div className="w-1/4">
-              <img
-                src={userIcon}
-                className="h-12 w-12 rounded-full object-cover"
-                alt=""
-              />
-            </div>
-            <div className="w-full">
-              <div className="text-lg font-semibold">Javascript Indonesia</div>
-              <span className="text-gray-500">
-                Evan : some one can fix this
-              </span>
-            </div>
-          </div>
         </div>
         <div className="flex w-full flex-col justify-between px-5">
-        <div className="mt-5 flex flex-col">
+          <div className="mt-5 flex flex-col">
             {messages.map((chat, index) => (
+              <>
               <div
-                key={index}
-                className={`flex ${
-                  chat.received ? "justify-start" : "justify-end"
-                } mb-4`}
-              >
-                {chat.received ? (
-                  <img
-                    src={userIcon}
-                    className="h-12 w-12 rounded-full object-cover"
-                    alt=""
-                  />
-                ) : null}
+                  className={
+                    chat.from === localStorage.username
+                      ? "flex w-full justify-start"
+                      : "flex w-full justify-end"
+                  }>
                 <div
-                  className={`${
-                    chat.received
-                      ? "ml-2 rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-400 px-4 py-3 text-white"
-                      : "mr-2 mt-4 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white"
-                  } max-w-md break-words`}
-                >
-                  {chat.message}
+                  key={index}
+                  className={`flex ${
+                    chat.received ? "justify-start" : "justify-end"
+                  } mb-4`}>
+                  {chat.from === localStorage.username ? (
+                    <>
+                      <label>
+                        {chat.from === localStorage.username
+                          ? "You"
+                          : chat.from}
+                      </label>
+                      <img
+                        src={userIcon}
+                        className="h-12 w-12 rounded-full object-cover"
+                        alt=""
+                      />
+                    </>
+                  ) : null}
                 </div>
-                {!chat.received ? (
-                  <img
-                    src={userIcon}
-                    className="h-12 w-12 rounded-full object-cover"
-                    alt=""
-                  />
-                ) : null}
-              </div>
+                {/* {console.log(chat.received)} */}
+                
+                  <div
+                    className={`${
+                      chat.from === localStorage.username
+                        ? "ml-2 flex justify-center rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-400 px-4 py-3 text-white"
+                        : "mr-2  mt-4 flex rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white"
+                    } max-w-md break-words`}>
+                    <label htmlFor="">{chat.message}</label>
+                  </div>
+                </div>
+              </>
             ))}
           </div>
           <form className="relative py-5" onSubmit={handleSubmit}>
@@ -185,8 +182,7 @@ export default function ChatPage({ socket }) {
             />
             <button
               className="btn btn-base-100 absolute bottom-0 right-0 top-0 m-auto mr-3"
-              type="submit"
-            >
+              type="submit">
               Send
             </button>
           </form>
