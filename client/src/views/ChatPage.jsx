@@ -51,9 +51,8 @@ export default function ChatPage({ socket }) {
 
   return (
     <>
-      <div className="mx-auto h-auto w-screen rounded-lg shadow-lg">
-        <div className="flex flex-row h-96 justify-between bg-white">
-          <div className="flex w-2/5 flex-col overflow-auto border-r-2">
+        <div className="flex flex-row justify-between bg-white max-h-fit">
+          <div className="flex max-h-full w-2/5 flex-col overflow-auto border-r-2">
             <div
               className={
                 room !== "defaultRoom"
@@ -164,59 +163,7 @@ export default function ChatPage({ socket }) {
               </div>
             </div>
 
-            <div className="flex flex-row items-center border-b-2 px-2 py-4">
-              <div className="w-1/4">
-                <img
-                  src={userIcon}
-                  className="h-12 w-12 rounded-full object-cover"
-                  alt=""
-                />
-              </div>
-              <div className="w-full">
-                <div className="text-lg font-semibold">
-                  Javascript Indonesia
-                </div>
-                <span className="text-gray-500">
-                  Evan : some one can fix this
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-row items-center border-b-2 px-2 py-4">
-              <div className="w-1/4">
-                <img
-                  src={userIcon}
-                  className="h-12 w-12 rounded-full object-cover"
-                  alt=""
-                />
-              </div>
-              <div className="w-full">
-                <div className="text-lg font-semibold">
-                  Javascript Indonesia
-                </div>
-                <span className="text-gray-500">
-                  Evan : some one can fix this
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-row items-center border-b-2 px-2 py-4">
-              <div className="w-1/4">
-                <img
-                  src={userIcon}
-                  className="h-12 w-12 rounded-full object-cover"
-                  alt=""
-                />
-              </div>
-              <div className="w-full">
-                <div className="text-lg font-semibold">
-                  Javascript Indonesia
-                </div>
-                <span className="text-gray-500">
-                  Evan : some one can fix this
-                </span>
-              </div>
-            </div>
+            
           </div>
           <div className="flex w-full flex-col justify-between px-5">
             <div className="mt-5 flex flex-col">
@@ -224,7 +171,7 @@ export default function ChatPage({ socket }) {
                 <>
                   <div
                     className={
-                      chat.from === localStorage.username
+                      chat.from !== localStorage.username
                         ? "flex w-full justify-start"
                         : "flex w-full justify-end"
                     }>
@@ -233,7 +180,7 @@ export default function ChatPage({ socket }) {
                       className={`flex ${
                         chat.received ? "justify-start" : "justify-end"
                       } mb-4`}>
-                      {chat.from === localStorage.username ? (
+                      {chat.from !== localStorage.username ? (
                         <>
                           <label>
                             {chat.from === localStorage.username
@@ -252,7 +199,7 @@ export default function ChatPage({ socket }) {
 
                     <div
                       className={`${
-                        chat.from === localStorage.username
+                        chat.from !== localStorage.username
                           ? "ml-2 flex justify-center rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-400 px-4 py-3 text-white"
                           : "mr-2  mt-4 flex rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white"
                       } max-w-md break-words`}>
@@ -278,7 +225,6 @@ export default function ChatPage({ socket }) {
             </form>
           </div>
         </div>
-      </div>
     </>
   );
 }

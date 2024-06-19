@@ -30,12 +30,10 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="container mx-auto rounded-lg shadow-lg">
-        <div className="flex items-center justify-between border-b-2 bg-white px-5 py-5">
+      <div className="container rounded-lg shadow-lg">
+        <div className="flex items-center justify-between border-b-2 bg-white px-5 py-5 w-screen">
           <div className="text-2xl font-semibold">ServiceSync</div>
-          <button onClick={handleLogout}>
-            Logout
-          </button>
+          <button onClick={handleLogout}>Logout</button>
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-500 p-2 font-semibold text-white">
             {localStorage.username.charAt(0).toUpperCase()}
           </div>
