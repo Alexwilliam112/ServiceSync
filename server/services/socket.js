@@ -23,9 +23,9 @@ const initializeSocket = (server) => {
       console.log('username: ' + socket.handshake.auth.username)
     }
 
-    socket.on("message:new", ({ message }) => {
+    socket.on("message:new", ({ message, roomId, username }) => {
       const room = socket.currentRoom;
-      // MessageModel.create({}) //TODO
+      MessageModel.create({message, roomId, username}) //TODO
       console.log(socket.handshake.auth.username); //username
       console.log(message) //pesan
 
