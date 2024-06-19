@@ -3,17 +3,17 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import { io } from 'socket.io-client'
 import Toastify from 'toastify-js';
 import BaseLayout from "../layouts/BaseLayout.jsx";
-import ChatPage from "../views/ChatPage.jsx";
-// import Template from "../views/Template.jsx";
+import Template from "../views/Template.jsx";
+import LoginPage from "../views/LoginPage.jsx";
 
 const socket = io("http://localhost:3001", {
     autoConnect: false
 });
 const router = createBrowserRouter([
-    // {
-    //     path: "/login",
-    //     element: < Template url={url} />
-    // },
+    {
+        path: "/login",
+        element: < LoginPage url={url} />
+    },
     {
         element: <BaseLayout />,
         // loader: () => {
@@ -36,8 +36,8 @@ const router = createBrowserRouter([
         //         return redirect('/login')
         //     }
 
-        //     return null
-        // },
+            // return null
+        // },  
         children: [
             {
                 path: "/chat",
@@ -48,6 +48,6 @@ const router = createBrowserRouter([
             //     element: < Template url={url} />
             // }
         ]
-    },
+    }
 ]);
 export default router
