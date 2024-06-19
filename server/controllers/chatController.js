@@ -6,9 +6,27 @@ const { Sequelize } = require('sequelize')
 module.exports = (() => {
     class ChatController {
 
+        static async newCase(req, res, next) {
+            try {
+                const userId = req.loginInfo.id
+
+                const data = await Case.create({
+                    userId
+                })
+
+                res.status(201).json({
+                    message: 'Success Create New Room',
+                    data
+                })
+
+            } catch (err) {
+                next(err)
+            }
+        }
+
         static async readCases(req, res, next) {
             try {
-                const { userId } = req.params
+                const userId = req.loginInfo.id
 
                 const user = await User.findByPk(Number(userId))
                 if (!user) throw { name: 'NotFound' }
@@ -25,6 +43,7 @@ module.exports = (() => {
                 })
 
                 res.status(200).json({
+                    message: 'Success Read All Rooms',
                     data
                 })
 

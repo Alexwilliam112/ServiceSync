@@ -43,7 +43,7 @@ module.exports = {
 
         if(err.name === 'JsonWebTokenError') {
             status = 401
-            message = 'Invalid token'
+            message = 'Unauthorized Access. Please LogIn'
         }
 
         if(err.name === 'Forbidden') {
