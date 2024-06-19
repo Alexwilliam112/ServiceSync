@@ -3,9 +3,9 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import { io } from 'socket.io-client'
 import Toastify from 'toastify-js';
 import BaseLayout from "../layouts/BaseLayout.jsx";
-import Template from "../views/Template.jsx";
 import LoginPage from "../views/LoginPage.jsx";
-
+import ChatPage from "../views/ChatPage.jsx";
+const url = "http://localhost:3001"
 const socket = io("http://localhost:3001", {
     autoConnect: false
 });

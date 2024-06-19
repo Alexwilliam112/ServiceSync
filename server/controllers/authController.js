@@ -18,7 +18,7 @@ module.exports = (() => {
                         username
                     }
                 })
-                
+
                 if (!compare(password, user.password)) throw { name: "AccountNotFound" }
 
                 const userData = await User.findOne({
@@ -71,10 +71,10 @@ module.exports = (() => {
                         password: "password_google_29183y912*(&S("
                     }
                 })
-
+                // console.log(user[0].username);
                 const userData = await User.findOne({
                     where: {
-                        id: user.id
+                        username: user[0].username
                     },
                     include: [
                         {
@@ -82,6 +82,7 @@ module.exports = (() => {
                         }
                     ]
                 })
+                console.log(`<<<<<<<<<<<<<ok>>>>>>>>>>>>>`);
 
                 payload = {
                     id: userData.id,
