@@ -1,5 +1,6 @@
 'use strict';
-const { Server } = require('socket.io');
+const { Server } = require('socket.io')
+const MessageModel = require('../models/firebase/messageClass')
 
 const initializeSocket = (server) => {
   const io = new Server(server, {
@@ -18,6 +19,8 @@ const initializeSocket = (server) => {
     });
 
     socket.on("message:new", ({ message }) => {
+      // MessageModel.create({}) //TODO
+
       // Emit message to everyone in the room
       io.emit("message:update", {
         message,

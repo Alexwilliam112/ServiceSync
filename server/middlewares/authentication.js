@@ -11,10 +11,11 @@ module.exports = {
             const payload = verifyToken(access_token)
 
             req.loginInfo = {
-                id: user.id,
-                user: user.userName,
-                email: user.email
+                id: payload.id,
+                username: payload.username,
+                role: payload.role
             }
+            
             next()
 
         } catch (err) {
