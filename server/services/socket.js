@@ -1,8 +1,13 @@
 'use strict'
-const socketIo = require('socket.io');
+const { Server } = require('socket.io');
 
 const initializeSocket = (server) => {
-    const io = socketIo(server);
+    const io = new Server(server, {
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST"]
+        }
+    });
 
     io.on('connection', (socket) => {
         console.log('New client connected');
@@ -24,4 +29,4 @@ const initializeSocket = (server) => {
     return io;
 };
 
-module.exports = initializeSocket
+module.exports = initializeSocket;
