@@ -16,6 +16,7 @@ export default function LoginPage({url}) {
         headers: { token: googleResponse.credential },
       });
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("username", data.username);
       navigate("/chat");
     } catch (error) {
         console.log(error);
@@ -41,6 +42,7 @@ export default function LoginPage({url}) {
       let info = { username, password };
       let { data } = await axios.post(`${url}/login`, info);
       localStorage.setItem(`access_token`, data.access_token);
+      localStorage.setItem("username", data.username);
       navigate("/chat");
     } catch (error) {
       Toastify({
