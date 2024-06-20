@@ -55,7 +55,7 @@ export default function Navbar() {
 
   function handleLogout() {
     localStorage.clear();
-    navigate("/login");
+    navigate("/");
   }
 
   function toggleModal() {
@@ -64,7 +64,6 @@ export default function Navbar() {
 
   return (
     <>
-      {console.log(currentTheme)}
       <div
         className={
           currentTheme === "light"
@@ -125,7 +124,7 @@ export default function Navbar() {
                   : "w-12 rounded-full bg-red-500 text-neutral-content"
               }>
               <span className="text-xl text-white">
-                {localStorage.username.charAt(0).toUpperCase()}
+                {localStorage.username[0].toUpperCase()}
               </span>
             </div>
           </div>

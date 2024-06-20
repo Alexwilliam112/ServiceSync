@@ -16,7 +16,6 @@ export default function RoomCard({ roomData, room, url }) {
         { roomId, changeTo },
         { headers: { Authorization: `Bearer ${localStorage.access_token}` } }
       );
-      console.log(data);
     } catch (error) {
       Toastify({
         text: error.response.data.message,
@@ -53,7 +52,7 @@ export default function RoomCard({ roomData, room, url }) {
             : "border-l-4 bg-gray-900"
           : ""
       }`}>
-      <div className="w-1/4">
+      <div className="">
         <img
           src={userIcon}
           className="h-12 w-12 rounded-full object-cover bg-inherit"
@@ -64,11 +63,12 @@ export default function RoomCard({ roomData, room, url }) {
         <div
           className={
             currentTheme === "light"
-              ? "text-lg font-semibold text-gray-900"
-              : "text-lg font-semibold text-gray-50"
+              ? "text-lg font-semibold text-gray-900 ml-2"
+              : "text-lg font-semibold text-gray-50 ml-2"
           }>
           {roomData.topic}
         </div>
+          <span className="ml-2">{roomList.lastMsg}</span>
       </div>
       {decoded === "admin" ? (
         <label className="inline-flex cursor-pointer items-center">

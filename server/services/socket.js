@@ -55,6 +55,7 @@ const initializeSocket = (server) => {
             message: reply,
             roomId
           })
+          
           io.to(room).emit("message:update", replyMsg);
         }
       }
