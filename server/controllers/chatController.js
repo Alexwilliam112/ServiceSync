@@ -82,10 +82,6 @@ module.exports = (() => {
             try {
                 // const data = await Room.readAll()
                 // await Room.create({username: 'alexTest', topic: 'paling baru'})
-                // await Room.update({roomId: 'DD7Bpdz6Xl1uElGJFIuW', lastMsg: 'LAST MSG 4444444'})
-                const roomId = 'GqyKQBC14toiqoR0c24u'
-
-                const data = await Room.findOne({roomId})
 
                 res.status(200).json(data)
 
