@@ -26,23 +26,24 @@ const initializeSocket = (server) => {
 
     socket.on("message:new", async ({ message, roomId, username }) => {
       const room = socket.currentRoom;
+      if (roomId) {
+        // Sync to database
+        Message.create({ message, roomId, username }) //TODO
+        Room.update({ roomId, lastMsg: message })
 
-      // Sync to database
-      Message.create({ message, roomId, username }) //TODO
-      Room.update({roomId, message})
+        console.log(socket.handshake.auth.username); //username
+        console.log(message) //pesan
 
-      console.log(socket.handshake.auth.username); //username
-      console.log(message) //pesan
+        // Emit message to ROOM
+        io.to(room).emit("message:update", {
+          from: socket.handshake.auth.username,
+          message
+        });
 
-      // Emit message to ROOM
-      io.to(room).emit("message:update", {
-        from: socket.handshake.auth.username,
-        message
-      });
-
-      //Emit updatedRooms to GLOBAL
-      const updatedRooms = await Room.readAll();
-      io.emit('newRoomList', updatedRooms);
+        //Emit updatedRooms to GLOBAL
+        const updatedRooms = await Room.readAll();
+        io.emit('newRoomList', updatedRooms);
+      }
     });
 
     socket.on('disconnect', () => {

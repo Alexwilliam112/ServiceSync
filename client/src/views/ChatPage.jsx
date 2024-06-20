@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import userIcon from "../assets/userIcon.avif";
-import Toastify from "toastify-js";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import userIcon from "../assets/userIcon.avif";
 import RoomCard from "../components/RoomCard";
 
 export default function ChatPage_Admin({ socket, url }) {
@@ -17,7 +15,8 @@ export default function ChatPage_Admin({ socket, url }) {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
-      });
+      })
+      console.log(data);
       setRoomList(data.data);
     } catch (error) {
       console.log(error);
@@ -26,7 +25,9 @@ export default function ChatPage_Admin({ socket, url }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
     if (messageSent.trim() !== "") {
+
       socket.emit("message:new", {
         message: messageSent,
         roomId: room,
@@ -77,6 +78,7 @@ export default function ChatPage_Admin({ socket, url }) {
                   setMessages={setMessages}
                   socket={socket}
                   url={url}
+                  messageSent={messageSent}
                 />
               </div>
             );
