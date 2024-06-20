@@ -27,22 +27,19 @@ module.exports = (() => {
 
         static async readCases(req, res, next) {
             try {
-                const userId = req.loginInfo.id
+                const { username, id, role } = req.loginInfo
 
-                const user = await User.findByPk(Number(userId))
+                const user = await User.findByPk(Number(id))
                 if (!user) throw { name: 'NotFound' }
 
-                const data = await Case.findAll({
-                    where: {
-                        userId,
-                        status: true
-                    },
-                    attributes: [
-                        [Sequelize.literal('id'), 'roomId'],
-                        [sequelize.fn('to_char', sequelize.col('createdAt'), 'YYYY-MM-dd'), 'createdAt']
-                    ]
-                })
+                let data = ''
 
+                if(role === 'admin') {
+                    data = await Room.readAll()
+                } else {
+                    data = await Room.read({ username })
+                }
+                
                 res.status(200).json({
                     message: 'Success Read All Rooms',
                     data
