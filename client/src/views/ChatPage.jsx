@@ -8,7 +8,7 @@ import RoomCard from "../components/RoomCard";
 export default function ChatPage_Admin({ socket, url }) {
   const [messageSent, setMessageSent] = useState("");
   const [messages, setMessages] = useState([]);
-  const [room, setRoom] = useState("defaultRoom");
+  const [room, setRoom] = useState(null);
   const [roomList, setRoomList] = useState([]);
 
   async function fetchRoomList() {
@@ -46,6 +46,7 @@ export default function ChatPage_Admin({ socket, url }) {
     socket.connect();
 
     socket.emit("joinRoom", { room });
+    console.log(room)
 
     socket.on("message:update", (newMessage) => {
       setMessages((current) => {
@@ -63,6 +64,10 @@ export default function ChatPage_Admin({ socket, url }) {
     };
   }, [room]);
 
+  useEffect(() => {
+
+  },[messages])
+
   return (
     <>
       <div className="flex max-h-fit flex-row justify-between bg-white">
@@ -74,9 +79,9 @@ export default function ChatPage_Admin({ socket, url }) {
                   roomData={el}
                   room={room}
                   setRoom={setRoom}
-                  messages={messages}
                   setMessages={setMessages}
                   socket={socket}
+                  url={url}
                 />
               </div>
             );
@@ -88,7 +93,7 @@ export default function ChatPage_Admin({ socket, url }) {
               <>
                 <div
                   className={
-                    chat.from !== localStorage.username
+                    chat.username !== localStorage.username
                       ? "flex w-full justify-start"
                       : "flex w-full justify-end"
                   }>
@@ -97,12 +102,12 @@ export default function ChatPage_Admin({ socket, url }) {
                     className={`flex ${
                       chat.received ? "justify-start" : "justify-end"
                     } mb-4`}>
-                    {chat.from !== localStorage.username ? (
+                    {chat.username !== localStorage.username ? (
                       <>
                         <label>
-                          {chat.from === localStorage.username
+                          {chat.username === localStorage.username
                             ? "You"
-                            : chat.from}
+                            : chat.username}
                         </label>
                         <img
                           src={userIcon}
@@ -115,7 +120,7 @@ export default function ChatPage_Admin({ socket, url }) {
 
                   <div
                     className={`${
-                      chat.from !== localStorage.username
+                      chat.username !== localStorage.username
                         ? "ml-2 flex justify-center rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-400 px-4 py-3 text-white"
                         : "mr-2  mt-4 flex rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white"
                     } max-w-md break-words`}>
