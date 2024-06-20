@@ -42,12 +42,12 @@ const initializeSocket = (server) => {
         });
 
         //Emit updatedRooms to GLOBAL
-        const updatedRooms = await Room.readAll();
-        io.emit('newRoomList', updatedRooms);
-        
-        if(Room.findOne({roomId})) {
+        const updatedRooms = await Room.readAll()
+        io.emit('newRoomList', updatedRooms)
+
+        if (Room.findOne({ roomId })) {
           console.log(`AUTO REPLY <>>>>>>>><<<<`);
-          const reply = await Core({message, roomId})
+          const reply = await Core({ message, roomId })
           console.log(`AUTO REPLY:`, reply);
 
           const replyMsg = await Message.create({
@@ -55,8 +55,11 @@ const initializeSocket = (server) => {
             message: reply,
             roomId
           })
-          
-          io.to(room).emit("message:update", replyMsg);
+
+          io.to(room).emit("message:update", replyMsg)
+          Room.update({ roomId, lastMsg: reply })
+          const updatedRooms = await Room.readAll()
+          io.emit('newRoomList', updatedRooms)
         }
       }
     });
