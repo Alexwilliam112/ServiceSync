@@ -5,6 +5,11 @@ module.exports = {
 
         let status = 500
         let message = 'Internal server error'
+
+        if(err.name === 'InvalidInput') {
+            status = 400
+            message = err.ent
+        }
         
         if(err.name === 'SequelizeValidationError') {
             status = 400
