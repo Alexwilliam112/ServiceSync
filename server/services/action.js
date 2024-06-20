@@ -53,8 +53,8 @@ module.exports = async function Core({ message, roomId }) {
         if (Filter.isQueryingOrder(message)) return await Action.queryOrder(message)
         if (Filter.isAngry(message)) return await Action.priorityFlag(roomId)
 
-        // return await AutoReply(message)
-        return `Pending AI`
+        const gptReply = await AutoReply(message)
+        return gptReply
 
     } catch (err) {
         console.log(err);

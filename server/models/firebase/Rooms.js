@@ -66,9 +66,16 @@ module.exports = (() => {
 
         static async update({ roomId, lastMsg }) {
             try {
+                const maxLength = 70
+                let lastMessage = lastMsg
+
+                if (lastMsg.length > maxLength) {
+                    lastMessage = lastMsg.substring(0, maxLength - 3) + '...';
+                }
+
                 const roomRef = db.collection('Rooms').doc(roomId)
                 const data = {
-                    lastMsg,
+                    lastMsg: lastMessage,
                     time: admin.firestore.FieldValue.serverTimestamp(),
                 }
 

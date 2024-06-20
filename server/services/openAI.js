@@ -1,15 +1,16 @@
 'use strict'
 const OpenAI = require("openai")
 const openai = new OpenAI({
-    apiKey: 'sk-proj-8I3MxkJPDt5YLWdCYuZCT3BlbkFJWO7K0zYq3DlOIfUcL2j3'
+    apiKey: process.env.OPEN_AI_SECRET
 })
 
 module.exports = {
     AutoReply: async (message) => {
-        let prompt = ''
+        let prompt = `Anda adalah seorang customer service, layani customer anda sesuai dengan norma dan prinsip customer experience yang baik.
+        Saat ini user berkata: ${message}`
 
         const chatCompletion = await openai.chat.completions.create({
-            model: "ft:gpt-3.5-turbo-1106:personal::9ZASmzso",
+            model: "gpt-3.5-turbo",
             messages: [{ "role": "user", "content": `${prompt}` }],
         });
 
@@ -17,5 +18,7 @@ module.exports = {
         if (typeof (gptResponse.content) !== 'string') {
             return 'Mohon tunggu,..'
         }
+
+        return gptResponse.content
     }
 }
