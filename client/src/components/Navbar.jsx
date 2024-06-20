@@ -10,7 +10,7 @@ export default function Navbar() {
   const [topic, setTopic] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const url = "http://localhost:3001";
+  const url = "https://server.cozyb.me";
   const decoded = atob(localStorage.role);
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
 
