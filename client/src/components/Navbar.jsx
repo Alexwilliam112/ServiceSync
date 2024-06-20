@@ -30,7 +30,7 @@ export default function Navbar() {
         },
       });
       toggleModal();
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.error(error);
       Toastify({
