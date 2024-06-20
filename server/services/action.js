@@ -57,6 +57,7 @@ module.exports = async function Core({ message, roomId }) {
         return `Pending AI`
 
     } catch (err) {
+        console.log(err);
         return `Mohon tunggu,...`
     }
 }

@@ -106,6 +106,11 @@ module.exports = (() => {
 
         static QUERIES() {
             return [
+                "pesenan",
+                "psenan",
+                "psanan",
+                "order",
+                "ordr",
                 "pesanan",
                 "barang",
                 "order",
