@@ -84,7 +84,7 @@ export default function ChatPage_Admin({ socket, url }) {
 
   return (
     <>
-      <div className="flex max-h-fit flex-row justify-between bg-white">
+      <div className="flex h-5/6 flex-row justify-between bg-white">
         <div className="flex max-h-full w-2/5 flex-col overflow-auto border-r-2">
           {roomList.map((el, i) => {
             return (
