@@ -13,7 +13,7 @@ module.exports = (() => {
         }
 
         static isAskingOrder (message) {
-            for (const keyword of Identifiers.QUERIES) {
+            for (const keyword of Identifiers.QUERIES()) {
                 const regex = generateRegex(keyword)
 
                 if (regex.test(message)) {
@@ -24,7 +24,7 @@ module.exports = (() => {
         }
 
         static isAngry (message) {
-            for (const keyword of Identifiers.RED_FLAGS) {
+            for (const keyword of Identifiers.RED_FLAGS()) {
                 const regex = generateRegex(keyword)
                 const uppercaseWordsPattern = /\b[A-Z]{2,}\b/g;
                 const matches = message.match(uppercaseWordsPattern)
