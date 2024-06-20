@@ -7,7 +7,12 @@ module.exports = (() => {
     }
 
     class Filter {
-        static isQueryingOrder (message) {
+        static isQueryingOrder(message) {
+            const orderNumberPattern = /\bORD-\d{8}\b/;
+            return orderNumberPattern.test(message)
+        }
+
+        static isAskingOrder (message) {
             for (const keyword of Identifiers.QUERIES) {
                 const regex = generateRegex(keyword)
 
@@ -21,14 +26,15 @@ module.exports = (() => {
         static isAngry (message) {
             for (const keyword of Identifiers.RED_FLAGS) {
                 const regex = generateRegex(keyword)
+                const uppercaseWordsPattern = /\b[A-Z]{2,}\b/g;
+                const matches = message.match(uppercaseWordsPattern)
 
-                if (regex.test(message)) {
-                    return true;
-                }
+                if (regex.test(message)) return true;
+                if(matches && matches.length >= 2) return true;
             }
             return false;
         }
     }
 
-    return MessageFilter
+    return Filter
 })()

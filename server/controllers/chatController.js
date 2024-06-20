@@ -6,6 +6,21 @@ const { User } = require('../models')
 module.exports = (() => {
     class ChatController {
 
+        static async changeAutoreply(req, res, next) {
+            try {
+                const { changeTo, roomId } = req.body
+
+                await Room.updateAutoreply({ roomId, changeTo })
+
+                res.status(200).json({
+                    message: 'Updated autoreply value'
+                })
+
+            } catch (err) {
+                next(err)
+            }
+        }
+
         static async newCase(req, res, next) {
             try {
                 const { username } = req.loginInfo

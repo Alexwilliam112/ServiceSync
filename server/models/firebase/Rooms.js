@@ -99,6 +99,22 @@ module.exports = (() => {
                 throw err;
             }
         }
+
+        static async updateAutoreply({ roomId, changeTo }) {
+            try {
+                const roomRef = db.collection('Rooms').doc(roomId);
+                const data = {
+                    autoreply: changeTo,
+                }
+                
+                await roomRef.update(data)
+                return { roomId, ...data }
+
+            } catch (err) {
+                console.log(err)
+                throw err
+            }
+        }
     }
 
     return Room
