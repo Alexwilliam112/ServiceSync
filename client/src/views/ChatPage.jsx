@@ -15,7 +15,7 @@ export default function ChatPage_Admin({ socket, url }) {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
-      })
+      });
       console.log(data);
       setRoomList(data.data);
     } catch (error) {
@@ -25,9 +25,7 @@ export default function ChatPage_Admin({ socket, url }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
     if (messageSent.trim() !== "") {
-
       socket.emit("message:new", {
         message: messageSent,
         roomId: room,
@@ -36,7 +34,27 @@ export default function ChatPage_Admin({ socket, url }) {
       setMessageSent(""); // Clear the message input after sending
     }
   }
-  
+
+  const handleRoomChange = async (newRoom) => {
+    const { data } = await axios.get(`${url}/chat-history/${newRoom}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.access_token}`,
+      },
+    });
+    console.log(data, "ini chat history");
+    setMessages(data); // Clear messages when switching rooms
+
+    // setMessages([]); // Clear messages when switching rooms
+    console.log({
+      message: messageSent,
+      roomId: room,
+      username: localStorage.username,
+    });
+    setRoom(newRoom);
+    console.log(`ROOM NAME:` + newRoom);
+    socket.emit("joinRoom", { room: newRoom });
+  };
+
   useEffect(() => {
     fetchRoomList();
     socket.auth = {
@@ -70,16 +88,8 @@ export default function ChatPage_Admin({ socket, url }) {
         <div className="flex max-h-full w-2/5 flex-col overflow-auto border-r-2">
           {roomList.map((el, i) => {
             return (
-              <div key={i}>
-                <RoomCard
-                  roomData={el}
-                  room={room}
-                  setRoom={setRoom}
-                  setMessages={setMessages}
-                  socket={socket}
-                  url={url}
-                  messageSent={messageSent}
-                />
+              <div key={i} onClick={() => handleRoomChange(el.roomId)}>
+                <RoomCard roomData={el} room={room} />
               </div>
             );
           })}
@@ -87,46 +97,50 @@ export default function ChatPage_Admin({ socket, url }) {
         <div className="flex h-96 w-full flex-col justify-between overflow-auto px-5">
           <div className="mt-5 flex flex-col">
             {messages.map((chat, index) => (
-              <>
-                <div
-                  className={
-                    chat.username !== localStorage.username
-                      ? "flex w-full justify-start"
-                      : "flex w-full justify-end"
-                  }>
-                  <div
-                    key={index}
-                    className={`flex ${
-                      chat.received ? "justify-start" : "justify-end"
-                    } mb-4`}>
-                    {chat.username !== localStorage.username ? (
-                      <>
-                        <label>
-                          {chat.username === localStorage.username
-                            ? "You"
-                            : chat.username}
-                        </label>
-                        <img
-                          src={userIcon}
-                          className="h-12 w-12 rounded-full object-cover"
-                          alt=""
-                        />
-                      </>
-                    ) : null}
+              <div
+                key={index}
+                className={
+                  chat.username !== localStorage.username
+                    ? "mb-4 flex w-full justify-start"
+                    : "mb-4 flex w-full justify-end"
+                }>
+                {chat.username !== localStorage.username ? (
+                  <div className="flex items-start">
+                    <img
+                      src={userIcon}
+                      className="h-12 w-12 rounded-full object-cover"
+                      alt="user icon"
+                    />
+                    <div className="ml-2">
+                      <label className="mb-1 block text-xs text-gray-500">
+                        {chat.username}
+                      </label>
+                      <div className="flex w-fit justify-center break-words rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-400 px-4 py-3 text-white">
+                        <label htmlFor="">{chat.message}</label>
+                      </div>
+                    </div>
                   </div>
-
-                  <div
-                    className={`${
-                      chat.username !== localStorage.username
-                        ? "ml-2 flex justify-center rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-400 px-4 py-3 text-white"
-                        : "mr-2  mt-4 flex rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white"
-                    } max-w-md break-words`}>
-                    <label htmlFor="">{chat.message}</label>
+                ) : (
+                  <div className="flex items-end">
+                    <div className="mr-2 text-right">
+                      <label className="mb-1 block text-xs text-gray-500">
+                        {chat.username}
+                      </label>
+                      <div className="flex w-fit justify-end break-words rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white">
+                        <label htmlFor="">{chat.message}</label>
+                      </div>
+                    </div>
+                    <img
+                      src={userIcon}
+                      className="h-12 w-12 rounded-full object-cover"
+                      alt="user icon"
+                    />
                   </div>
-                </div>
-              </>
+                )}
+              </div>
             ))}
           </div>
+
           <form className="relative py-5" onSubmit={handleSubmit}>
             <input
               className="w-full rounded-xl bg-gray-300 px-3 py-5 pr-12"
