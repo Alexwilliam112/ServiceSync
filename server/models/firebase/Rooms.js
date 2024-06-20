@@ -64,7 +64,7 @@ module.exports = (() => {
             }
         }
 
-        static async update(roomId, { lastMsg }) {
+        static async update({roomId, lastMsg }) {
             try {
                 const roomRef = db.collection('Rooms').doc(roomId)
                 const data = {
