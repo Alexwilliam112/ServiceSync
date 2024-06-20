@@ -87,7 +87,11 @@ export default function ChatPage_Admin({ socket, url }) {
       const rooms = newRoomList.filter(
         (el) => localStorage.username === el.username
       );
-      setRoomList(rooms);
+      if(localStorage.username === 'admin1') {
+        setRoomList(newRoomList);
+      } else {
+        setRoomList(rooms)
+      }
     });
 
     return () => {
@@ -120,10 +124,11 @@ export default function ChatPage_Admin({ socket, url }) {
                 : "flex h-5/6 flex-row justify-between bg-zinc-700"
             }>
             <div className="flex max-h-full w-2/5 flex-col overflow-auto border-r-2">
+            {console.log(roomList)}
               {roomList.map((el, i) => {
                 return (
                   <div key={i} onClick={() => handleRoomChange(el.roomId)}>
-                    {console.log(roomList[i], `<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ini room  list`)}
+                    {/* {console.log(roomList[i], `<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ini room  list`)} */}
                     <RoomCard
                       roomData={el}
                       room={room}
