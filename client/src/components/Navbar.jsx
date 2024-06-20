@@ -19,13 +19,13 @@ export default function Navbar() {
         topic,
       };
       console.log(`${url}/cases`, `ini url`);
-      await axios.post(`${url}/cases`, body , {
+      await axios.post(`${url}/cases`, body, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
-      toggleModal()
-      window.location.reload()
+      toggleModal();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -62,19 +62,20 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="container rounded-lg shadow-lg">
-        <div className="flex w-screen items-center justify-between border-b-2 bg-white px-5 py-5">
-          {decoded === "user" ? (
-            <button
-              onClick={toggleModal}
-              className="block rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300"
-              type="button">
-              Add Room
-            </button>
-          ) : (
-            false
-          )}
-          <div className="text-2xl font-semibold">ServiceSync</div>
+      <div className="flex items-center justify-between border-b-2 bg-white px-5 py-5 shadow-md">
+        {decoded === "user" && (
+          <button
+            onClick={toggleModal}
+            className="rounded-lg bg-red-600 px-5 py-2.5 text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300">
+            Add Room
+          </button>
+        )}
+
+        <div className="flex-grow text-center text-2xl font-semibold">
+          ServiceSync
+        </div>
+
+        <div className="flex items-center space-x-4">
           <button
             onClick={handleLogout}
             className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:outline-none">
@@ -102,12 +103,11 @@ export default function Navbar() {
                   icon={faX}
                   type="button"
                   onClick={toggleModal}
-                  className="ms-auto inline-flex items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                  style={{ fontSize: "1rem" }}
+                  className="cursor-pointer text-gray-400 hover:text-gray-900"
                 />
               </div>
               <div className="p-4">
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleAddRoom}>
                   <div>
                     <label
                       htmlFor="room-name"
@@ -125,7 +125,6 @@ export default function Navbar() {
                   </div>
                   <button
                     type="submit"
-                    onClick={handleAddRoom}
                     className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
                     Create Room
                   </button>
