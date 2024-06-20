@@ -4,22 +4,27 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 
-
-export default function LoginPage({url}) {
+export default function LoginPage({ url }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   async function googleLogin(googleResponse) {
     try {
+      
       const { data } = await axios.post(`${url}/google-login`, null, {
         headers: { token: googleResponse.credential },
       });
+
+      const encoded = btoa(data.role);
+
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("role", encoded);
       navigate("/chat");
+
     } catch (error) {
-        console.log(error);
+      console.log(error);
       Toastify({
         text: error.response.data.message,
         duration: 3000,
@@ -38,12 +43,18 @@ export default function LoginPage({url}) {
 
   async function handleLogin(e) {
     try {
+
       e.preventDefault();
       let info = { username, password };
       let { data } = await axios.post(`${url}/login`, info);
+
+      const encoded = btoa(data.role);
+
       localStorage.setItem(`access_token`, data.access_token);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("role", encoded);
       navigate("/chat");
+
     } catch (error) {
       Toastify({
         text: error.response.data.message,

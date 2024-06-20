@@ -2,13 +2,27 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userIcon from "../assets/userIcon.avif";
 import Toastify from "toastify-js";
+import axios from "axios";
+import RoomCard from "../components/RoomCard";
 
-export default function ChatPage({ socket }) {
+export default function ChatPage_Admin({ socket, url }) {
   const [messageSent, setMessageSent] = useState("");
   const [messages, setMessages] = useState([]);
   const [room, setRoom] = useState("defaultRoom");
-  const [roomList, setRoomList] = useState([])
-  const navigate = useNavigate();
+  const [roomList, setRoomList] = useState([]);
+
+  async function fetchRoomList() {
+    try {
+      let { data } = await axios.get(`${url}/cases`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.access_token}`,
+        },
+      });
+      setRoomList(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -23,6 +37,8 @@ export default function ChatPage({ socket }) {
   }
 
   useEffect(() => {
+    fetchRoomList();
+
     socket.auth = {
       username: localStorage.username,
     };
@@ -37,9 +53,9 @@ export default function ChatPage({ socket }) {
       });
     });
 
-    socket.on("newRoomList", (newRoomList) => {
-      setRoomList(newRoomList)
-    });
+    // socket.on("newRoomList", (newRoomList) => {
+    //   setRoomList(newRoomList);
+    // });
 
     return () => {
       socket.off("message:update");
@@ -47,39 +63,25 @@ export default function ChatPage({ socket }) {
     };
   }, [room]);
 
-  const handleRoomChange = (newRoom) => {
-    setMessages([]); // Clear messages when switching rooms
-    setRoom(newRoom);
-    socket.emit("joinRoom", { room: newRoom });
-    console.log(room);
-  };
-
   return (
     <>
       <div className="flex max-h-fit flex-row justify-between bg-white">
-        
         <div className="flex max-h-full w-2/5 flex-col overflow-auto border-r-2">
-          <div
-            className={
-              room !== "defaultRoom"
-                ? "flex cursor-pointer flex-row items-center justify-center border-b-2 px-2 py-4"
-                : "flex cursor-pointer flex-row items-center justify-center border-b-2 border-l-4 border-blue-400 px-2 py-4"
-            }
-            onClick={() => handleRoomChange("defaultRoom")}>
-            <div className="w-1/4">
-              <img
-                src={userIcon}
-                className="h-12 w-12 rounded-full object-cover"
-                alt=""
-              />
-            </div>
-            <div className="w-full">
-              <div className="text-lg font-semibold">Default Room</div>
-              <span className="text-gray-500">Welcome to Default Room</span>
-            </div>
-          </div>
+          {roomList.map((el,i) => {
+            return (
+              <div key={i}>
+                <RoomCard
+                  roomData={el}
+                  room={room}
+                  setRoom={setRoom}
+                  messages={messages}
+                  setMessages={setMessages}
+                  socket={socket}
+                />
+              </div>
+            );
+          })}
         </div>
-
         <div className="flex h-96 w-full flex-col justify-between overflow-auto px-5">
           <div className="mt-5 flex flex-col">
             {messages.map((chat, index) => (
@@ -110,7 +112,6 @@ export default function ChatPage({ socket }) {
                       </>
                     ) : null}
                   </div>
-                  {/* {console.log(chat.received)} */}
 
                   <div
                     className={`${

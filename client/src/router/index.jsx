@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/chat",
-                element: < ChatPage socket={socket} />
+                element: < ChatPage socket={socket} url={url} />
             }
         ]
     }
