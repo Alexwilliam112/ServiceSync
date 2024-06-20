@@ -43,6 +43,10 @@ const initializeSocket = (server) => {
         //Emit updatedRooms to GLOBAL
         const updatedRooms = await Room.readAll();
         io.emit('newRoomList', updatedRooms);
+
+        if(Room.findOne({roomId})) {
+          // ai logic
+        }
       }
     });
 

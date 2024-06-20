@@ -49,7 +49,7 @@ module.exports = (() => {
                 const snapshot = await db.collection('Rooms')
                     .where('status', '==', 'open')
                     .get();
-                
+
                 const rooms = [];
                 snapshot.forEach(doc => {
                     rooms.push({ roomId: doc.id, ...doc.data() });
@@ -64,7 +64,7 @@ module.exports = (() => {
             }
         }
 
-        static async update({roomId, lastMsg }) {
+        static async update({ roomId, lastMsg }) {
             try {
                 const roomRef = db.collection('Rooms').doc(roomId)
                 const data = {
@@ -79,6 +79,24 @@ module.exports = (() => {
                 console.log(`ERROR NYA DISINI ANJING <<<<<<<<<<<<<<<<<<<<<<<`);
                 console.log(err)
                 throw err
+            }
+        }
+
+        static async findOne({ roomId }) {
+            try {
+                const docRef = db.collection('Rooms').doc(roomId);
+                const doc = await docRef.get();
+
+                if (!doc.exists) {
+                    throw { name: 'NotFound' }
+                }
+
+                const data = doc.data();
+                return data.autoreply;
+
+            } catch (err) {
+                console.log(err);
+                throw err;
             }
         }
     }
