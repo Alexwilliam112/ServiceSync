@@ -3,10 +3,33 @@ import { useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export default function Navbar() {
+  const [topic, setTopic] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const url = "http://localhost:3001";
+  const decoded = atob(localStorage.role);
+
+  async function handleAddRoom(e) {
+    try {
+      e.preventDefault();
+      let body = {
+        topic,
+      };
+      console.log(`${url}/cases`, `ini url`);
+      await axios.post(`${url}/cases`, body , {
+        headers: {
+          Authorization: `Bearer ${localStorage.access_token}`,
+        },
+      });
+      toggleModal()
+      window.location.reload()
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function handleLogout() {
     try {
@@ -41,18 +64,20 @@ export default function Navbar() {
     <>
       <div className="container rounded-lg shadow-lg">
         <div className="flex w-screen items-center justify-between border-b-2 bg-white px-5 py-5">
-          <button
-            onClick={toggleModal}
-            className="block rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300"
-            type="button"
-          >
-            Add Room
-          </button>
+          {decoded === "user" ? (
+            <button
+              onClick={toggleModal}
+              className="block rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-blue-300"
+              type="button">
+              Add Room
+            </button>
+          ) : (
+            false
+          )}
           <div className="text-2xl font-semibold">ServiceSync</div>
           <button
             onClick={handleLogout}
-            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:outline-none"
-          >
+            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:outline-none">
             Logout
           </button>
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-500 p-2 font-semibold text-white">
@@ -66,8 +91,7 @@ export default function Navbar() {
           id="authentication-modal"
           tabIndex="-1"
           aria-hidden="true"
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-800 bg-opacity-50"
-        >
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-800 bg-opacity-50">
           <div className="relative w-full max-w-md p-4">
             <div className="relative rounded-lg bg-white shadow">
               <div className="flex items-center justify-between rounded-t border-b p-4">
@@ -87,8 +111,7 @@ export default function Navbar() {
                   <div>
                     <label
                       htmlFor="room-name"
-                      className="mb-2 block text-sm font-medium text-gray-900"
-                    >
+                      className="mb-2 block text-sm font-medium text-gray-900">
                       Room Name
                     </label>
                     <input
@@ -97,12 +120,13 @@ export default function Navbar() {
                       id="room-name"
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Enter room name"
+                      onChange={(e) => setTopic(e.target.value)}
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                  >
+                    onClick={handleAddRoom}
+                    className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
                     Create Room
                   </button>
                 </form>
