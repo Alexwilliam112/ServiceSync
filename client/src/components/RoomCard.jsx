@@ -16,8 +16,8 @@ export default function RoomCard({
             Authorization: `Bearer ${localStorage.access_token}`
         }
     })
-    console.log(data, `<<<<<<<<<<<<<<<<<<<<< ini data`);
-    setMessages(data); // Clear messages when switching rooms
+    console.log(data);
+    setMessages([]); // Clear messages when switching rooms
     setRoom(newRoom?.roomId);
     console.log(newRoom)
     console.log(roomData.topic, "<<<<<<<<<<<NewRoom");

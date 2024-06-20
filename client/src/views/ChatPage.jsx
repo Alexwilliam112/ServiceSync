@@ -35,10 +35,9 @@ export default function ChatPage_Admin({ socket, url }) {
       setMessageSent(""); // Clear the message input after sending
     }
   }
-
+  
   useEffect(() => {
     fetchRoomList();
-
     socket.auth = {
       username: localStorage.username,
     };
@@ -46,7 +45,7 @@ export default function ChatPage_Admin({ socket, url }) {
     socket.connect();
 
     socket.emit("joinRoom", { room });
-    console.log(room)
+    console.log(room);
 
     socket.on("message:update", (newMessage) => {
       setMessages((current) => {
@@ -62,17 +61,13 @@ export default function ChatPage_Admin({ socket, url }) {
       socket.off("message:update");
       socket.disconnect();
     };
-  }, [room]);
-
-  useEffect(() => {
-
-  },[messages])
+  }, []);
 
   return (
     <>
       <div className="flex max-h-fit flex-row justify-between bg-white">
         <div className="flex max-h-full w-2/5 flex-col overflow-auto border-r-2">
-          {roomList.map((el,i) => {
+          {roomList.map((el, i) => {
             return (
               <div key={i}>
                 <RoomCard
