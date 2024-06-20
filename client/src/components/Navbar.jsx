@@ -1,10 +1,10 @@
-import { useState, useContext } from "react";
+import { faMoon, faSun, faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import { themeContext } from "../context/themeContext";
+import { themeContext } from "../context/ThemeContext";
 
 export default function Navbar() {
   const [topic, setTopic] = useState("");
