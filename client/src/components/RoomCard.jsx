@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Toastify from "toastify-js";
 import userIcon from "../assets/userIcon.avif";
 import { themeContext } from "../context/themeContext";
 
 export default function RoomCard({ roomData, room, url }) {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(roomData.autoreply);
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
   const decoded = atob(localStorage.role);
 
@@ -39,6 +39,10 @@ export default function RoomCard({ roomData, room, url }) {
     setIsChecked(checked);
     handleToggleAutoReply(roomData.roomId, checked);
   };
+
+  useEffect(() => {
+    setIsChecked(roomData.autoreply);
+  }, [roomData.autoreply]);
 
   return (
     <div
