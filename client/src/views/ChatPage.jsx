@@ -22,7 +22,6 @@ export default function ChatPage_Admin({ socket, url }) {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
-      console.log(data);
       setRoomList(data.data);
     } catch (error) {
       console.log(error);
@@ -76,19 +75,21 @@ export default function ChatPage_Admin({ socket, url }) {
     socket.connect();
 
     socket.emit("joinRoom", { room });
-    console.log(room);
 
     socket.on("message:update", (newMessage) => {
-      console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`, newMessage);
-      handleRoomChange(room);
+      // handleRoomChange(room);
+      console.log(`INI ADALAH MESSAGE:UPDATE >>>>>>>>>>>>`, newMessage);
       setMessages((current) => {
         return [...current, newMessage];
       });
     });
 
-    // socket.on("newRoomList", (newRoomList) => {
-    //   setRoomList(newRoomList);
-    // });
+    socket.on("newRoomList", (newRoomList) => {
+      const rooms = newRoomList.filter(
+        (el) => localStorage.username === el.username
+      );
+      setRoomList(rooms);
+    });
 
     return () => {
       socket.off("message:update");
@@ -123,91 +124,132 @@ export default function ChatPage_Admin({ socket, url }) {
               {roomList.map((el, i) => {
                 return (
                   <div key={i} onClick={() => handleRoomChange(el.roomId)}>
-                    <RoomCard roomData={el} room={room} url={url} />
+                    <RoomCard
+                      roomData={el}
+                      room={room}
+                      url={url}
+                      roomList={roomList[i]}
+                    />
                   </div>
                 );
               })}
             </div>
-            <div
-              className={
-                currentTheme === "light"
-                  ? "flex max-h-full w-full flex-col justify-between px-5"
-                  : "flex max-h-full w-full flex-col justify-between bg-gray-900 px-5"
-              }>
+            {room ? (
               <div
-                className=" flex max-h-full w-full flex-col overflow-auto"
-                ref={chatContainerRef}>
-                {messages.map((chat, index) => (
-                  <div
-                    key={index}
-                    className={
-                      chat.username !== localStorage.username
-                        ? "mb-4 flex w-full justify-start"
-                        : "mb-4 flex w-full justify-end"
-                    }>
-                    {chat.username !== localStorage.username ? (
-                      <div className="flex items-start">
-                        <img
-                          src={userIcon}
-                          className="h-12 w-12 rounded-full object-cover"
-                          alt="user icon"
-                        />
-                        <div className="ml-2">
-                          <label className={
-                              currentTheme === "light"
-                                ? "mb-1 block text-sm text-gray-900"
-                                : "mb-1 block text-sm text-gray-100"
-                            }>
-                            {chat.username}
-                          </label>
-                          <div className="flex w-fit justify-center break-words rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-300 px-4 py-3 text-gray-900">
-                            <label htmlFor="">{chat.message}</label>
+                className={
+                  currentTheme === "light"
+                    ? "flex max-h-full w-full flex-col justify-between px-5"
+                    : "flex max-h-full w-full flex-col justify-between bg-gray-900 px-5"
+                }>
+                <div
+                  className=" flex max-h-full w-full flex-col overflow-auto"
+                  ref={chatContainerRef}>
+                  {messages.map((chat, index) => (
+                    <div
+                      key={index}
+                      className={
+                        chat.username !== localStorage.username
+                          ? "mb-4 flex w-full justify-start"
+                          : "mb-4 flex w-full justify-end"
+                      }>
+                      {chat.username !== localStorage.username ? (
+                        <div className="flex items-start">
+                          <img
+                            src={userIcon}
+                            className="h-12 w-12 rounded-full object-cover"
+                            alt="user icon"
+                          />
+                          <div className="ml-2">
+                            <label
+                              className={
+                                currentTheme === "light"
+                                  ? "mb-1 block text-sm text-gray-900"
+                                  : "mb-1 block text-sm text-gray-100"
+                              }>
+                              {chat.username}
+                            </label>
+                            <div className="flex w-fit justify-center break-words rounded-br-3xl rounded-tl-xl rounded-tr-3xl bg-gray-300 px-4 py-3 text-gray-900">
+                              <label htmlFor="">{chat.message}</label>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-end">
-                        <div className="mr-2 text-right">
-                          <label
-                            className={
-                              currentTheme === "light"
-                                ? "mb-1 block text-sm text-gray-900"
-                                : "mb-1 block text-sm text-gray-100"
-                            }>
-                            You
-                          </label>
-                          <div className="flex w-fit justify-end break-words rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white">
-                            <label htmlFor="">{chat.message}</label>
+                      ) : (
+                        <div className="flex items-end">
+                          <div className="mr-2 text-right">
+                            <label
+                              className={
+                                currentTheme === "light"
+                                  ? "mb-1 block text-sm text-gray-900"
+                                  : "mb-1 block text-sm text-gray-100"
+                              }>
+                              You
+                            </label>
+                            <div className="flex w-fit justify-end break-words rounded-bl-3xl rounded-tl-3xl rounded-tr-xl bg-blue-400 px-4 py-3 text-white">
+                              <label htmlFor="">{chat.message}</label>
+                            </div>
                           </div>
+                          <img
+                            src={userIcon}
+                            className="h-12 w-12 rounded-full object-cover"
+                            alt="user icon"
+                          />
                         </div>
-                        <img
-                          src={userIcon}
-                          className="h-12 w-12 rounded-full object-cover"
-                          alt="user icon"
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <form className="relative py-5" onSubmit={handleSubmit}>
-                <div className="relative">
-                  <input
-                    className="w-full rounded-xl bg-gray-300 px-3 py-5 pr-16"
-                    type="text"
-                    placeholder="Type your message here..."
-                    onChange={(e) => setMessageSent(e.target.value)}
-                    value={messageSent}
-                  />
-                  <button
-                    className="btn-base-100 absolute right-3 top-1/2 -translate-y-1/2 rounded-xl bg-black p-3 "
-                    type="submit">
-                    Send
-                  </button>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              </form>
-            </div>
+
+                <form className="relative py-5" onSubmit={handleSubmit}>
+                  <div className="relative">
+                    <input
+                      className={
+                        currentTheme === "light"
+                          ? "w-full rounded-xl bg-gray-300 px-3 py-5 pr-16 text-gray-900"
+                          : "w-full rounded-xl bg-gray-300 px-3 py-5 pr-16 text-gray-900"
+                      }
+                      type="text"
+                      placeholder="Type your message here..."
+                      onChange={(e) => setMessageSent(e.target.value)}
+                      value={messageSent}
+                    />
+                    <button
+                      className={
+                        currentTheme === "light"
+                          ? "btn-base-100 absolute right-3 top-1/2 -translate-y-1/2 rounded-xl bg-gray-100 p-3"
+                          : "btn-base-100 absolute right-3 top-1/2 -translate-y-1/2 rounded-xl bg-zinc-800 p-3"
+                      }
+                      type="submit">
+                      Send
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              <>
+                <div className="flex h-full w-full items-center justify-center">
+                  <div className="grid">
+                    <label
+                      htmlFor=""
+                      className={
+                        currentTheme !== "light"
+                          ? " text-center text-3xl text-gray-100"
+                          : " text-center text-3xl text-gray-900"
+                      }>
+                      Please Select
+                    </label>
+                    <label
+                      htmlFor=""
+                      className={
+                        currentTheme !== "light"
+                          ? " text-center text-3xl text-gray-100"
+                          : " text-center text-3xl text-gray-900"
+                      }>
+                      A Room
+                    </label>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </>
       )}

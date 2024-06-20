@@ -11,7 +11,7 @@ const socket = io("http://localhost:3001", {
 });
 const router = createBrowserRouter([
     {
-        path: "/login",
+        path: "/",
         element: < LoginPage url={url} />,
         loader: () => {
             if(localStorage.access_token) return redirect("/chat")
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
                         fontWeight: "bold"
                     }
                 }).showToast();
-                return redirect('/login')
+                return redirect('/')
             }
 
             return null
