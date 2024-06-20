@@ -26,8 +26,10 @@ const initializeSocket = (server) => {
 
     socket.on("message:new", ({ message, roomId, username }) => {
       const room = socket.currentRoom;
+
+      // Sync to database
       Message.create({ message, roomId, username }) //TODO
-      //TODO update Room entity
+      Room.update({roomId, message})
 
       console.log(socket.handshake.auth.username); //username
       console.log(message) //pesan
