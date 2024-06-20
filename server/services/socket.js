@@ -1,6 +1,6 @@
 'use strict';
 const { Server } = require('socket.io')
-const MessageModel = require('../models/firebase/messageClass')
+const Message = require('../models/firebase/Messages')
 
 const initializeSocket = (server) => {
   const io = new Server(server, {
@@ -25,7 +25,7 @@ const initializeSocket = (server) => {
 
     socket.on("message:new", ({ message, roomId, username }) => {
       const room = socket.currentRoom;
-      MessageModel.create({message, roomId, username}) //TODO
+      Message.create({message, roomId, username}) //TODO
       console.log(socket.handshake.auth.username); //username
       console.log(message) //pesan
 

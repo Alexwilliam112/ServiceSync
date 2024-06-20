@@ -1,5 +1,6 @@
 'use strict'
-const MessageModel = require('../models/firebase/messageClass')
+const Message = require('../models/firebase/Messages')
+const Room = require('../models/firebase/Rooms')
 const { User, Case, sequelize } = require('../models')
 const { Sequelize } = require('sequelize')
 
@@ -56,7 +57,7 @@ module.exports = (() => {
             try {
                 const { roomId } = req.params
 
-                const messages = await MessageModel.read({ roomId })
+                const messages = await Message.read({ roomId })
 
                 if (!messages) throw { name: 'NotFound' }
 
@@ -69,11 +70,10 @@ module.exports = (() => {
 
         static async postChat(req, res, next) {
             try {
-                const { username, message, roomId } = req.body
+                const data = await Room.readAll({username: 'alexTest'})
+                // await Room.create({username: 'alexTest'})
 
-                await MessageModel.create({ username, message, roomId })
-
-                res.status(200).json('Added Message');
+                res.status(200).json(data)
 
             } catch (err) {
                 next(err)
