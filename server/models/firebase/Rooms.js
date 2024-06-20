@@ -76,6 +76,7 @@ module.exports = (() => {
                 return { roomId, ...data }
 
             } catch (err) {
+                console.log(`ERROR NYA DISINI ANJING <<<<<<<<<<<<<<<<<<<<<<<`);
                 console.log(err)
                 throw err
             }

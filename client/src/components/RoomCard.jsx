@@ -1,6 +1,5 @@
-import { useState } from "react";
-import userIcon from "../assets/userIcon.avif";
 import axios from "axios";
+import userIcon from "../assets/userIcon.avif";
 
 export default function RoomCard({
   roomData,
@@ -8,7 +7,8 @@ export default function RoomCard({
   setRoom,
   url,
   setMessages,
-  socket
+  socket,
+  messageSent
 }) {
   const handleRoomChange = async (newRoom) => {
     const { data } = await axios.get(`${url}/chat-history/${newRoom?.roomId}`, {
@@ -18,9 +18,13 @@ export default function RoomCard({
     })
     console.log(data);
     setMessages([]); // Clear messages when switching rooms
-    setRoom(newRoom?.roomId);
-    console.log(newRoom)
-    console.log(roomData.topic, "<<<<<<<<<<<NewRoom");
+    console.log({
+      message: messageSent,
+      roomId: room,
+      username: localStorage.username,
+    });
+    setRoom(newRoom);
+    console.log(`ROOM NAME:` + newRoom);
     socket.emit("joinRoom", { room: newRoom });
   };
   return (
@@ -31,7 +35,7 @@ export default function RoomCard({
             ? "flex cursor-pointer flex-row items-center justify-center border-b-2 px-2 py-4"
             : "flex cursor-pointer flex-row items-center justify-center border-b-2 border-l-4 border-blue-400 px-2 py-4"
         }
-        onClick={() => handleRoomChange(roomData)}>
+        onClick={() => handleRoomChange(roomData.roomId)}>
         <div className="w-1/4">
           <img
             src={userIcon}
