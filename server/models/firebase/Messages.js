@@ -23,18 +23,20 @@ module.exports = (() => {
             try {
                 const messagesRef = db.collection('Messages');
                 const snapshot = await messagesRef
-                    .where('roomId', '==', Number(roomId))
+                    .where('roomId', '==', roomId)
                     .get();
 
                 if (snapshot.empty) {
-                    return null;
+                    return [];
                 }
 
                 const messages = [];
                 snapshot.forEach(doc => {
-                    messages.push(doc.data());
+                    messages.push({ id: doc.id, ...doc.data() });
                 });
-                return messages
+
+                messages.sort((a, b) => a.timestamp.toDate() - b.timestamp.toDate());
+                return messages;
 
             } catch (err) {
                 console.log(err)

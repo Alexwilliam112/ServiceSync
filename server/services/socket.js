@@ -1,6 +1,7 @@
 'use strict';
 const { Server } = require('socket.io')
 const Message = require('../models/firebase/Messages')
+const Room = require('../models/firebase/Rooms')
 
 const initializeSocket = (server) => {
   const io = new Server(server, {
@@ -19,22 +20,27 @@ const initializeSocket = (server) => {
       console.log(`Client joined room: ${room}`);
     });
 
-    if (socket.handshake.auth){
+    if (socket.handshake.auth) {
       console.log('username: ' + socket.handshake.auth.username)
     }
 
     socket.on("message:new", ({ message, roomId, username }) => {
       const room = socket.currentRoom;
-      Message.create({message, roomId, username}) //TODO
+      Message.create({ message, roomId, username }) //TODO
+      //TODO update Room entity
+
       console.log(socket.handshake.auth.username); //username
       console.log(message) //pesan
 
-      // Emit message to everyone in the room
+      // Emit message to ROOM
       io.to(room).emit("message:update", {
         from: socket.handshake.auth.username,
         message
-    });
-    console.log(message)
+      });
+
+      //Emit updatedRooms to GLOBAL
+      const updatedRooms = Room.readAll();
+      io.emit('newRoomList', updatedRooms);
     });
 
     socket.on('disconnect', () => {
