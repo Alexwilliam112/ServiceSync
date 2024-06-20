@@ -5,8 +5,8 @@ import Toastify from 'toastify-js';
 import BaseLayout from "../layouts/BaseLayout.jsx";
 import ChatPage from "../views/ChatPage.jsx";
 import LoginPage from "../views/LoginPage.jsx";
-const url = "https://coreappalex.xyz"
-const socket = io("https://coreappalex.xyz", {
+const url = "https://server.cozyb.me"
+const socket = io("https://server.cozyb.me", {
     autoConnect: false
 });
 const router = createBrowserRouter([
