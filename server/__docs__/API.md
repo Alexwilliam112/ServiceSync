@@ -49,17 +49,7 @@
 {
   "access_token": "eyJhbGciOiJIUbta_uOSDU",
   "username": "IamUser12",
-  "role": "user",
-  "cases": [
-    {
-      "id": 1,
-      "userId": 2,
-      "status": true,
-      "autoreply": true,
-      "createdAt": "2024-06-19T10:40:22.000Z",
-      "updatedAt": "2024-06-19T10:40:25.000Z"
-    }
-  ]
+  "role": "user"
 }
 ```
 
@@ -89,19 +79,27 @@
 }
 ```
 
+### body:
+
+```json
+{
+  "topic": "Text Topic Name"
+}
+```
+
 > __Response (201 - CREATED)__
 
 ```json
 {
-  "message": "Success Create New Room",
-  "data": {
-    "status": true,
-    "autoreply": true,
-    "id": 3,
-    "userId": 2,
-    "updatedAt": "2024-06-19T12:23:45.676Z",
-    "createdAt": "2024-06-19T12:23:45.676Z"
-  }
+  "message": "Success Create New Room"
+}
+```
+
+> __Response (400 - BAD REQUEST)__
+
+```json
+{
+    "message": "Topic is required"
 }
 ```
 
@@ -130,15 +128,32 @@
   "message": "Success Read All Rooms",
   "data": [
     {
-      "roomId": 1,
-      "createdAt": "2024-06-19"
+      "roomId": "uHhn1UOUh09seBpDBDuB",
+      "autoreply": true,
+      "flag": "green",
+      "topic": "paling baru",
+      "lastMsg": null,
+      "username": "alexTest",
+      "status": "open",
+      "time": {
+        "_seconds": 1718854288,
+        "_nanoseconds": 590000000
+      }
     },
     {
-      "roomId": 7,
-      "createdAt": "2024-06-19"
-    }
+      "roomId": "lOcdbr3c2hS9CI8A3lhv",
+      "autoreply": true,
+      "flag": "green",
+      "topic": "WOY NI ORDER GA SMPE",
+      "lastMsg": null,
+      "username": "alexTest",
+      "status": "open",
+      "time": {
+        "_seconds": 1718854220,
+        "_nanoseconds": 164000000
+      }
+    },
   ]
-}
 ```
 
 > __Response (404 - NOT FOUND)__

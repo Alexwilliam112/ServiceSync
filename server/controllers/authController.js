@@ -3,7 +3,7 @@ const { compare } = require("bcryptjs")
 const { hash } = require("../helpers/bcrypt")
 const { signToken } = require("../helpers/jwt")
 const { OAuth2Client } = require("google-auth-library");
-const { User, Case } = require('../models')
+const { User } = require('../models')
 
 module.exports = (() => {
     class AuthController {
@@ -69,14 +69,8 @@ module.exports = (() => {
                 const userData = await User.findOne({
                     where: {
                         username: user[0].username
-                    },
-                    include: [
-                        {
-                            model: Case
-                        }
-                    ]
+                    }
                 })
-                console.log(`<<<<<<<<<<<<<ok>>>>>>>>>>>>>`);
 
                 payload = {
                     id: userData.id,
@@ -89,8 +83,7 @@ module.exports = (() => {
                 res.status(200).json({
                     access_token,
                     username: userData.username,
-                    role: userData.role,
-                    cases: userData.Cases
+                    role: userData.role
                 })
 
             } catch (err) {

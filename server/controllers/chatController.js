@@ -1,23 +1,21 @@
 'use strict'
 const Message = require('../models/firebase/Messages')
 const Room = require('../models/firebase/Rooms')
-const { User, Case, sequelize } = require('../models')
-const { Sequelize } = require('sequelize')
+const { User } = require('../models')
 
 module.exports = (() => {
     class ChatController {
 
         static async newCase(req, res, next) {
             try {
-                const userId = req.loginInfo.id
+                const { username } = req.loginInfo
+                const { topic } = req.body
 
-                const data = await Case.create({
-                    userId
-                })
+                if (!topic) throw { name: 'InvalidInput', ent: 'Topic is required' }
+                await Room.create({ username, topic })
 
                 res.status(201).json({
-                    message: 'Success Create New Room',
-                    data
+                    message: 'Success Create New Room'
                 })
 
             } catch (err) {
@@ -34,12 +32,12 @@ module.exports = (() => {
 
                 let data = ''
 
-                if(role === 'admin') {
+                if (role === 'admin') {
                     data = await Room.readAll()
                 } else {
                     data = await Room.read({ username })
                 }
-                
+
                 res.status(200).json({
                     message: 'Success Read All Rooms',
                     data
