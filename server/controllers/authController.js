@@ -1,6 +1,5 @@
 'use strict'
-const { compare } = require("bcryptjs")
-const { hash } = require("../helpers/bcrypt")
+const { compare } = require("../helpers/bcrypt")
 const { signToken } = require("../helpers/jwt")
 const { OAuth2Client } = require("google-auth-library");
 const { User } = require('../models')

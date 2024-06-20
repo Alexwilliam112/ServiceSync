@@ -4,7 +4,7 @@ import Toastify from "toastify-js";
 import userIcon from "../assets/userIcon.avif";
 import { themeContext } from "../context/themeContext";
 
-export default function RoomCard({ roomData, room, url }) {
+export default function RoomCard({ roomData, room, url, roomList }) {
   const [isChecked, setIsChecked] = useState(roomData.autoreply);
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
   const decoded = atob(localStorage.role);

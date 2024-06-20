@@ -78,7 +78,6 @@ export default function ChatPage_Admin({ socket, url }) {
 
     socket.on("message:update", (newMessage) => {
       // handleRoomChange(room);
-      console.log(`INI ADALAH MESSAGE:UPDATE >>>>>>>>>>>>`, newMessage);
       setMessages((current) => {
         return [...current, newMessage];
       });
@@ -124,6 +123,7 @@ export default function ChatPage_Admin({ socket, url }) {
               {roomList.map((el, i) => {
                 return (
                   <div key={i} onClick={() => handleRoomChange(el.roomId)}>
+                    {console.log(roomList[i], `<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ini room  list`)}
                     <RoomCard
                       roomData={el}
                       room={room}
