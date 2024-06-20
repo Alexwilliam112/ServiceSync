@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import Toastify from "toastify-js";
 import userIcon from "../assets/userIcon.avif";
-import { themeContext } from "../context/themeContext";
+import { themeContext } from "../context/ThemeContext";
 
 export default function RoomCard({ roomData, room, url, roomList }) {
   const [isChecked, setIsChecked] = useState(roomData.autoreply);

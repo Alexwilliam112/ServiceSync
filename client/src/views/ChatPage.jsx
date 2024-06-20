@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
+import load from "../assets/load.svg";
 import userIcon from "../assets/userIcon.avif";
 import RoomCard from "../components/RoomCard";
-import load from "../assets/load.svg";
-import { themeContext } from "../context/themeContext";
+import { themeContext } from "../context/ThemeContext";
 
 export default function ChatPage_Admin({ socket, url }) {
   const [messageSent, setMessageSent] = useState("");

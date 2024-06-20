@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom"
-import Navbar from "../components/Navbar"
 import { useContext, useEffect } from "react";
-import { themeContext } from "../context/themeContext";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { themeContext } from "../context/ThemeContext";
 
 export default function BaseLayout() {
     const { currentTheme, theme } = useContext(themeContext);
