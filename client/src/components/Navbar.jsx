@@ -15,7 +15,7 @@ export default function Navbar() {
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
 
   function handleTheme() {
-    setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
+    setCurrentTheme(currentTheme === "light" ? "dark" : "light");
   }
 
   async function handleAddRoom(e) {
@@ -64,44 +64,69 @@ export default function Navbar() {
 
   return (
     <>
-    {console.log(currentTheme)}
-      <div className={currentTheme === "light" ? "flex items-center justify-between border-b-2 bg-base-100 px-5 py-5 shadow-md" : "flex items-center justify-between border-b-2 bg-base-100 px-5 py-5 shadow-md bg-gray-700"}>
-        {decoded === "user" && (
+      {console.log(currentTheme)}
+      <div
+        className={
+          currentTheme === "light"
+            ? "flex items-center justify-between border-b-2 bg-gray-400 px-5 py-5 shadow-md"
+            : "flex items-center justify-between border-b-2 bg-gray-700 px-5 py-5 shadow-md"
+        }>
+        {decoded === "user" ? (
           <button
             onClick={toggleModal}
-            className={currentTheme === "light" ? "btn btn-primary bg-black" :"btn btn-primary hover:bg-green-400 bg-green-500" }
-          >
+            className={
+              currentTheme === "light"
+                ? "btn btn-primary border-gray-500 hover:border-gray-900 bg-gray-100 hover:bg-gray-200 text-gray-900"
+                : "btn btn-primary border-gray-500 hover:border-gray-900 bg-gray-300 hover:bg-gray-200 text-gray-700"
+            }>
             Add Room
           </button>
+        ) : (
+          false
         )}
 
-        <div className={currentTheme === "light" ? "flex-grow text-center text-2xl font-semibold" : "flex-grow text-center text-2xl font-semibold text-white" }>
+        <div
+          className={
+            currentTheme === "light"
+              ? "flex-grow text-center text-2xl font-semibold"
+              : "flex-grow text-center text-2xl font-semibold text-white"
+          }>
           ServiceSync
         </div>
 
         <div className="flex items-center space-x-4">
-          {currentTheme === "light" ? (
+          {currentTheme !== "light" ? (
             <FontAwesomeIcon
               icon={faSun}
               onClick={handleTheme}
-              className="cursor-pointer text-gray-400 hover:text-gray-900"
+              className="h-7 w-7 cursor-pointer text-gray-400 hover:text-gray-900"
             />
           ) : (
             <FontAwesomeIcon
               icon={faMoon}
               onClick={handleTheme}
-              className="cursor-pointer text-gray-400 hover:text-gray-900"
+              className="h-7 w-7 cursor-pointer text-gray-50 hover:text-gray-900"
             />
           )}
           <button
             onClick={handleLogout}
-            className={currentTheme === "light" ? "btn btn-primary bg-black" :"btn btn-primary hover:bg-green-400 bg-green-500" }
-          >
+            className={
+              currentTheme === "light"
+                ? "btn btn-primary border-gray-500 hover:border-gray-900 bg-gray-100 hover:bg-zinc-200 text-gray-900"
+                : "btn btn-primary border-gray-500 hover:border-gray-900 bg-zinc-300 hover:bg-zinc-200 text-gray-700"
+            }>
             Logout
           </button>
           <div className="avatar placeholder">
-            <div className={currentTheme === "light" ? "bg-blue-500 text-neutral-content rounded-full w-12":"bg-red-500 text-neutral-content rounded-full w-12"} >
-              <span className="text-xl text-white">{localStorage.username.charAt(0).toUpperCase()}</span>
+            <div
+              className={
+                currentTheme === "light"
+                  ? "w-12 rounded-full bg-blue-500 text-neutral-content"
+                  : "w-12 rounded-full bg-red-500 text-neutral-content"
+              }>
+              <span className="text-xl text-white">
+                {localStorage.username.charAt(0).toUpperCase()}
+              </span>
             </div>
           </div>
         </div>
@@ -112,14 +137,11 @@ export default function Navbar() {
           id="authentication-modal"
           tabIndex="-1"
           aria-hidden="true"
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-800 bg-opacity-50"
-        >
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-800 bg-opacity-50">
           <div className="relative w-full max-w-md p-4">
-            <div className="relative rounded-lg bg-base-100 shadow bg-white">
-              <div className="flex items-center justify-between rounded-t border-b p-4 bg-white">
-                <h3 className="text-xl text-black font-semibold text-base-content">
-                  Add Room
-                </h3>
+            <div className="relative rounded-lg bg-white shadow">
+              <div className="flex items-center justify-between rounded-t border-b bg-white p-4">
+                <h3 className="text-xl font-semibold text-black">Add Room</h3>
                 <FontAwesomeIcon
                   icon={faX}
                   type="button"
@@ -127,28 +149,26 @@ export default function Navbar() {
                   className="cursor-pointer text-gray-400 hover:text-gray-900"
                 />
               </div>
-              <div className="p-4 bg-white">
+              <div className="bg-white p-4">
                 <form className="space-y-4" onSubmit={handleAddRoom}>
                   <div>
                     <label
                       htmlFor="room-name"
-                      className="block text-black text-sm font-medium text-base-content"
-                    >
+                      className="block text-sm font-medium text-black">
                       Room Name
                     </label>
                     <input
                       type="text"
                       name="room-name"
                       id="room-name"
-                      className="bg-white input input-bordered w-full"
+                      className="input input-bordered w-full bg-white"
                       placeholder="Enter room name"
                       onChange={(e) => setTopic(e.target.value)}
                     />
                   </div>
                   <button
                     type="submit"
-                    className="btn btn-primary w-full bg-blue-600 text-gray-50"
-                  >
+                    className="btn btn-primary w-full bg-blue-600 text-gray-50">
                     Create Room
                   </button>
                 </form>
