@@ -13,7 +13,12 @@ const cors = require('cors')
 const app = express()
 const httpServer = createServer(app)
 
-app.use(cors())
+const corsOptions = {
+    origin: 'http://localhost:8000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true
+}
+app.use(cors(corsOptions))
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
