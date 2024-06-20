@@ -6,12 +6,18 @@ module.exports = (() => {
     class Message {
         static async create({ username, message, roomId }) {
             try {
-                return await db.collection('Messages').add({
+                await db.collection('Messages').add({
                     username,
                     message,
                     roomId,
-                    timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                    timestamp: admin.firestore.FieldValue.serverTimestamp()
                 });
+
+                return {
+                    username,
+                    message,
+                    roomId,
+                }
 
             } catch (err) {
                 console.log(err)
