@@ -2,6 +2,7 @@
 const { Server } = require('socket.io')
 const Message = require('../models/firebase/Messages')
 const Room = require('../models/firebase/Rooms')
+const Core = require('./action')
 
 const initializeSocket = (server) => {
   const io = new Server(server, {
@@ -43,6 +44,14 @@ const initializeSocket = (server) => {
         //Emit updatedRooms to GLOBAL
         const updatedRooms = await Room.readAll();
         io.emit('newRoomList', updatedRooms);
+
+        if(Room.findOne({roomId})) {
+          const reply = await Core({message, roomId})
+          io.to(room).emit("message:update", {
+            from: "admin",
+            reply
+          });
+        }
       }
     });
 

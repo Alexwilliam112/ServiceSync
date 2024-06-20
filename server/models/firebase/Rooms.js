@@ -82,6 +82,24 @@ module.exports = (() => {
             }
         }
 
+        static async findOne({ roomId }) {
+            try {
+                const docRef = db.collection('Rooms').doc(roomId);
+                const doc = await docRef.get();
+
+                if (!doc.exists) {
+                    throw { name: 'NotFound' }
+                }
+
+                const data = doc.data();
+                return data.autoreply;
+
+            } catch (err) {
+                console.log(err);
+                throw err;
+            }
+        }
+
         static async updateAutoreply({ roomId, changeTo }) {
             try {
                 const roomRef = db.collection('Rooms').doc(roomId);
