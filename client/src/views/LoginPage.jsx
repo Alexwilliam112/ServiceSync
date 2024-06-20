@@ -20,7 +20,8 @@ export default function LoginPage({ url }) {
 
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("username", data.username);
-      localStorage.setItem("role", encoded);
+      // localStorage.setItem("role", encoded);
+      localStorage.setItem("role", data.role);
       navigate("/chat");
 
     } catch (error) {
@@ -52,7 +53,8 @@ export default function LoginPage({ url }) {
 
       localStorage.setItem(`access_token`, data.access_token);
       localStorage.setItem("username", data.username);
-      localStorage.setItem("role", encoded);
+      // localStorage.setItem("role", encoded);
+      localStorage.setItem("role", data.role);
       navigate("/chat");
 
     } catch (error) {

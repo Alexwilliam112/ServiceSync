@@ -7,7 +7,8 @@ import { themeContext } from "../context/ThemeContext";
 export default function RoomCard({ roomData, room, url, roomList }) {
   const [isChecked, setIsChecked] = useState(roomData.autoreply);
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
-  const decoded = atob(localStorage.role);
+  // const decoded = atob(localStorage.role);
+  const decoded = localStorage.role;
 
   async function handleToggleAutoReply(roomId, changeTo) {
     try {
@@ -55,7 +56,7 @@ export default function RoomCard({ roomData, room, url, roomList }) {
       <div className="">
         <img
           src={userIcon}
-          className="h-12 w-12 rounded-full object-cover bg-inherit"
+          className="h-12 w-12 rounded-full bg-inherit object-cover"
           alt="User Icon"
         />
       </div>
@@ -63,12 +64,12 @@ export default function RoomCard({ roomData, room, url, roomList }) {
         <div
           className={
             currentTheme === "light"
-              ? "text-lg font-semibold text-gray-900 ml-2"
-              : "text-lg font-semibold text-gray-50 ml-2"
+              ? "ml-2 text-lg font-semibold text-gray-900"
+              : "ml-2 text-lg font-semibold text-gray-50"
           }>
           {roomData.topic}
         </div>
-          <span className="ml-2">{roomList.lastMsg}</span>
+        <span className="ml-2">{roomList.lastMsg}</span>
       </div>
       {decoded === "admin" ? (
         <label className="inline-flex cursor-pointer items-center">
@@ -88,7 +89,9 @@ export default function RoomCard({ roomData, room, url, roomList }) {
             Autoreply
           </span>
         </label>
-      ): false}
+      ) : (
+        false
+      )}
     </div>
   );
 }

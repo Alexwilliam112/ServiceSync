@@ -11,7 +11,8 @@ export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const url = "https://server.cozyb.me";
-  const decoded = atob(localStorage.role);
+  // const decoded = atob(localStorage.role);
+  const decoded = localStorage.role;
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
 
   function handleTheme() {
@@ -75,8 +76,8 @@ export default function Navbar() {
             onClick={toggleModal}
             className={
               currentTheme === "light"
-                ? "btn btn-primary border-gray-500 hover:border-gray-900 bg-gray-100 hover:bg-gray-200 text-gray-900"
-                : "btn btn-primary border-gray-500 hover:border-gray-900 bg-gray-300 hover:bg-gray-200 text-gray-700"
+                ? "btn btn-primary border-gray-500 bg-gray-100 text-gray-900 hover:border-gray-900 hover:bg-gray-200"
+                : "btn btn-primary border-gray-500 bg-gray-300 text-gray-700 hover:border-gray-900 hover:bg-gray-200"
             }>
             Add Room
           </button>
@@ -108,11 +109,11 @@ export default function Navbar() {
             />
           )}
           <button
-            onClick={handleLogout}
+            onClick={() => handleLogout()}
             className={
               currentTheme === "light"
-                ? "btn btn-primary border-gray-500 hover:border-gray-900 bg-gray-100 hover:bg-zinc-200 text-gray-900"
-                : "btn btn-primary border-gray-500 hover:border-gray-900 bg-zinc-300 hover:bg-zinc-200 text-gray-700"
+                ? "btn btn-primary border-gray-500 bg-gray-100 text-gray-900 hover:border-gray-900 hover:bg-zinc-200"
+                : "btn btn-primary border-gray-500 bg-zinc-300 text-gray-700 hover:border-gray-900 hover:bg-zinc-200"
             }>
             Logout
           </button>
@@ -123,8 +124,11 @@ export default function Navbar() {
                   ? "w-12 rounded-full bg-blue-500 text-neutral-content"
                   : "w-12 rounded-full bg-red-500 text-neutral-content"
               }>
+              {console.log(localStorage, `<<<<<<<<<<<<<<<<<<<<<< local`)}
               <span className="text-xl text-white">
-                {localStorage.username[0].toUpperCase()}
+                {localStorage.username
+                  ? localStorage.username[0].toUpperCase()
+                  : "U"}
               </span>
             </div>
           </div>
@@ -165,7 +169,8 @@ export default function Navbar() {
                       onChange={(e) => setTopic(e.target.value)}
                     />
                   </div>
-                  <button onClick={(e) => handleAddRoom(e)}
+                  <button
+                    onClick={(e) => handleAddRoom(e)}
                     type="button"
                     className="btn btn-primary w-full bg-blue-600 text-gray-50">
                     Create Room
