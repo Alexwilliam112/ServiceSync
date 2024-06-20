@@ -1,7 +1,7 @@
 'use strict'
 const OpenAI = require("openai")
 const openai = new OpenAI({
-    apiKey: 'sk-proj-3ImTH1HuaS6UgVnZjg0tT3BlbkFJGLKh2UyGe2rQHxDWgWyQ'
+    apiKey: process.env.OPEN_AI_SECRET
 })
 
 module.exports = {
