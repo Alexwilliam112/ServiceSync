@@ -35,7 +35,9 @@ export default function ChatPage_Admin({ socket, url }) {
         message: messageSent,
         roomId: room,
         username: localStorage.username,
-      }); // Include room
+      },
+      handleRoomChange(room)
+    ); // Include room
       setMessageSent(""); // Clear the message input after sending
     }
   }
@@ -72,6 +74,7 @@ export default function ChatPage_Admin({ socket, url }) {
     console.log(room);
 
     socket.on("message:update", (newMessage) => {
+      handleRoomChange(room)
       setMessages((current) => {
         return [...current, newMessage];
       });
@@ -102,7 +105,7 @@ export default function ChatPage_Admin({ socket, url }) {
               {roomList.map((el, i) => {
                 return (
                   <div key={i} onClick={() => handleRoomChange(el.roomId)}>
-                    <RoomCard roomData={el} room={room} />
+                    <RoomCard roomData={el} room={room} url={url} />
                   </div>
                 );
               })}
@@ -163,7 +166,7 @@ export default function ChatPage_Admin({ socket, url }) {
                   value={messageSent}
                 />
                 <button
-                  className="btn btn-base-100 absolute bottom-0 right-0 top-0 m-auto mr-3"
+                  className="btn btn-base-100 absolute bottom-0 right-0 top-0 -auto mr-3"
                   type="submit">
                   Send
                 </button>
