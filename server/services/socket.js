@@ -24,7 +24,7 @@ const initializeSocket = (server) => {
       console.log('username: ' + socket.handshake.auth.username)
     }
 
-    socket.on("message:new", ({ message, roomId, username }) => {
+    socket.on("message:new", async ({ message, roomId, username }) => {
       const room = socket.currentRoom;
 
       // Sync to database
@@ -41,7 +41,7 @@ const initializeSocket = (server) => {
       });
 
       //Emit updatedRooms to GLOBAL
-      const updatedRooms = Room.readAll();
+      const updatedRooms = await Room.readAll();
       io.emit('newRoomList', updatedRooms);
     });
 
