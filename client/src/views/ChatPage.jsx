@@ -79,6 +79,7 @@ export default function ChatPage_Admin({ socket, url }) {
     console.log(room);
 
     socket.on("message:update", (newMessage) => {
+      console.log(`>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`, newMessage);
       handleRoomChange(room);
       setMessages((current) => {
         return [...current, newMessage];

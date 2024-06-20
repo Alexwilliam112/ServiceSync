@@ -44,13 +44,18 @@ const initializeSocket = (server) => {
         //Emit updatedRooms to GLOBAL
         const updatedRooms = await Room.readAll();
         io.emit('newRoomList', updatedRooms);
-
+        
         if(Room.findOne({roomId})) {
+          console.log(`AUTO REPLY <>>>>>>>><<<<`);
           const reply = await Core({message, roomId})
-          io.to(room).emit("message:update", {
-            from: "admin",
-            reply
-          });
+          console.log(`AUTO REPLY:`, reply);
+
+          const replyMsg = await Message.create({
+            username: "admin1",
+            message: reply,
+            roomId
+          })
+          io.to(room).emit("message:update", replyMsg);
         }
       }
     });
