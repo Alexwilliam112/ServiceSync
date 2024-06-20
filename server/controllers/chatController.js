@@ -70,8 +70,8 @@ module.exports = (() => {
 
         static async postChat(req, res, next) {
             try {
-                const data = await Room.readAll({username: 'alexTest'})
-                // await Room.create({username: 'alexTest'})
+                const data = await Room.readAll()
+                // await Room.create({username: 'alexTest', topic: 'paling baru'})
 
                 res.status(200).json(data)
 

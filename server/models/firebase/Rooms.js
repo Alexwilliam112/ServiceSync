@@ -4,13 +4,15 @@ const db = require('../../config/firebaseConfig')
 
 module.exports = (() => {
     class Room {
-        static async create({ username }) {
+        static async create({ username, topic }) {
             try {
                 const docRef = await db.collection('Rooms').add({
                     username,
+                    topic,
                     lastMsg: null,
                     flag: 'green',
                     status: 'open',
+                    time: admin.firestore.FieldValue.serverTimestamp(),
                     autoreply: true
                 });
                 return docRef.id
@@ -27,11 +29,13 @@ module.exports = (() => {
                     .where('status', '==', 'open')
                     .where('username', '==', username)
                     .get();
-                    
+
                 const rooms = [];
                 snapshot.forEach(doc => {
                     rooms.push({ roomId: doc.id, ...doc.data() });
                 });
+
+                rooms.sort((a, b) => b.time.toDate() - a.time.toDate());
                 return rooms;
 
             } catch (err) {
@@ -50,7 +54,26 @@ module.exports = (() => {
                 snapshot.forEach(doc => {
                     rooms.push({ roomId: doc.id, ...doc.data() });
                 });
-                return rooms
+
+                rooms.sort((a, b) => b.time.toDate() - a.time.toDate());
+                return rooms;
+
+            } catch (err) {
+                console.log(err)
+                throw err
+            }
+        }
+
+        static async update(roomId, { lastMsg }) {
+            try {
+                const roomRef = db.collection('Rooms').doc(roomId)
+                const data = {
+                    lastMsg,
+                    time: admin.firestore.FieldValue.serverTimestamp(),
+                }
+
+                await roomRef.update(data)
+                return { roomId, ...data }
 
             } catch (err) {
                 console.log(err)
