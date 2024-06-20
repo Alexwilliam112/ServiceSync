@@ -5,16 +5,16 @@ export const themeContext = createContext({
     setCurrentTheme: () => { },
     theme: {
         light: {
-            dataTheme: ""
+            dataTheme: "light"
         },
         dark: {
-            dataTheme: ""
+            dataTheme: "dark"
         }
     }
 });
 
 export default function ThemeProvider({ children }) {
-    const [currentTheme, setCurrentTheme] = useState("light")
+    const [currentTheme, setCurrentTheme] = useState("light");
 
     return (
         <themeContext.Provider value={{
