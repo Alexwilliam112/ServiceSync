@@ -49,7 +49,7 @@ module.exports = (() => {
                 const snapshot = await db.collection('Rooms')
                     .where('status', '==', 'open')
                     .get();
-
+                
                 const rooms = [];
                 snapshot.forEach(doc => {
                     rooms.push({ roomId: doc.id, ...doc.data() });
