@@ -64,7 +64,7 @@ module.exports = (() => {
             }
         }
 
-        static async update({roomId, lastMsg }) {
+        static async update({ roomId, lastMsg }) {
             try {
                 const roomRef = db.collection('Rooms').doc(roomId)
                 const data = {
@@ -77,6 +77,22 @@ module.exports = (() => {
 
             } catch (err) {
                 console.log(`ERROR NYA DISINI ANJING <<<<<<<<<<<<<<<<<<<<<<<`);
+                console.log(err)
+                throw err
+            }
+        }
+
+        static async updateAutoreply({ roomId, changeTo }) {
+            try {
+                const roomRef = db.collection('Rooms').doc(roomId);
+                const data = {
+                    autoreply: changeTo,
+                }
+                
+                await roomRef.update(data)
+                return { roomId, ...data }
+
+            } catch (err) {
                 console.log(err)
                 throw err
             }
