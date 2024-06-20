@@ -1,6 +1,6 @@
 'use strict';
 const admin = require('firebase-admin');
-const serviceAccount = require('../env/firebase-adminsdk.json');
+const serviceAccount = require('../env/firebase-adminsdk-alex.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
