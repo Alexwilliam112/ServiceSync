@@ -111,6 +111,49 @@
 }
 ```
 
+## POST /autoreply
+
+### header:
+
+```json
+{
+  "Authorization": "Bearer <access_token>"
+}
+```
+
+### body:
+
+```json
+{
+  "roomId": "unique roomId",
+  "changeTo": false,
+}
+```
+
+> __Response (200 - OK)__
+
+```json
+{
+  "message": "Updated autoreply value"
+}
+```
+
+> __Response (400 - BAD REQUEST)__
+
+```json
+{
+    "message": "Topic is required"
+}
+```
+
+> __Response (401 - UNAUTHORIZED)__
+
+```json
+{
+  "message": "Unauthorized Access. Please LogIn"
+}
+```
+
 ## GET /cases
 
 ### header:
