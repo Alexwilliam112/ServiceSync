@@ -19,8 +19,8 @@ export default function Navbar() {
   }
 
   async function handleAddRoom(e) {
+    e.preventDefault();
     try {
-      e.preventDefault();
       let body = {
         topic,
       };
@@ -149,7 +149,7 @@ export default function Navbar() {
                 />
               </div>
               <div className="bg-white p-4">
-                <form className="space-y-4" onSubmit={handleAddRoom}>
+                <div className="space-y-4">
                   <div>
                     <label
                       htmlFor="room-name"
@@ -165,12 +165,12 @@ export default function Navbar() {
                       onChange={(e) => setTopic(e.target.value)}
                     />
                   </div>
-                  <button
-                    type="submit"
+                  <button onClick={(e) => handleAddRoom(e)}
+                    type="button"
                     className="btn btn-primary w-full bg-blue-600 text-gray-50">
                     Create Room
                   </button>
-                </form>
+                </div>
               </div>
             </div>
           </div>
