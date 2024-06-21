@@ -31,7 +31,9 @@ export default function Navbar() {
         },
       });
       toggleModal();
-      window.location.reload();
+      navigate('/chat-redirect')
+      // window.location.reload();
+
     } catch (error) {
       console.error(error);
       Toastify({
