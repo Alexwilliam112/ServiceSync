@@ -45,10 +45,8 @@ const initializeSocket = (server) => {
         const updatedRooms = await Room.readAll()
         io.emit('newRoomList', updatedRooms)
 
-        if (Room.findOne({ roomId })) {
-          console.log(`AUTO REPLY <>>>>>>>><<<<`);
+        if (username === 'admin1' && Room.findOne({ roomId }) === true) {
           const reply = await Core({ message, roomId })
-          console.log(`AUTO REPLY:`, reply);
 
           const replyMsg = await Message.create({
             username: "admin1",
