@@ -25,7 +25,7 @@ class Action {
     static async queryOrder(message) {
         try {
             let orderId
-            const orderNumberPattern = /\bORD-\d{8}\b/;
+            const orderNumberPattern = /\bORD-\d{6}\b/;
             orderId = message.match(orderNumberPattern);
 
             const orderData = await Order.findOne({
@@ -34,11 +34,14 @@ class Action {
                 }
             })
 
+            const reply = `Order dengan nomor ${orderData.orderId} milik bapak/ibu ${orderData.name} saat ini sedang pada tahap ${orderData.status}`
+
             if(!orderData) return `Maaf, nomor order yang bapak/ibu berikan tidak terdaftar pada sistem kami, mohon dibantu periksa kembali`
-            return `Order dengan nomor ${orderData.orderId} milik bapak/ibu ${orderData.name} saat ini sedang pada tahap ${orderData.status}`
+            return reply
 
         } catch (err) {
-            return `Err`
+            console.log(err);
+            return 'none'
         }
     }
 
@@ -49,6 +52,7 @@ class Action {
 
 module.exports = async function Core({ message, roomId }) {
     try {
+
         if (Filter.isAskingOrder(message)) return Action.answerTemplate()
         if (Filter.isQueryingOrder(message)) return await Action.queryOrder(message)
         if (Filter.isAngry(message)) return await Action.priorityFlag(roomId)

@@ -8,8 +8,8 @@ module.exports = (() => {
 
     class Filter {
         static isQueryingOrder(message) {
-            const orderNumberPattern = /\bORD-\d{8}\b/;
-            return orderNumberPattern.test(message)
+            const orderPattern = /\bORD\b/;
+            return orderPattern.test(message)
         }
 
         static isAskingOrder (message) {

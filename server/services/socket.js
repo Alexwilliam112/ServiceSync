@@ -12,7 +12,7 @@ const initializeSocket = (server) => {
     }
   });
 
-  io.on('connection', (socket) => {
+  io.on('connection', async (socket) => {
     console.log('New client connected');
 
     socket.on('joinRoom', ({ room }) => {
@@ -45,7 +45,7 @@ const initializeSocket = (server) => {
         const updatedRooms = await Room.readAll()
         io.emit('newRoomList', updatedRooms)
 
-        if (username === 'admin1' && Room.findOne({ roomId }) === true) {
+        if (username !== 'admin1' && await Room.findOne({ roomId }) === true) {          
           const reply = await Core({ message, roomId })
 
           const replyMsg = await Message.create({

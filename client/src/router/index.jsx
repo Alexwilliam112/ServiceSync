@@ -5,11 +5,17 @@ import Toastify from 'toastify-js';
 import BaseLayout from "../layouts/BaseLayout.jsx";
 import ChatPage from "../views/ChatPage.jsx";
 import LoginPage from "../views/LoginPage.jsx";
+import TemporaryPage from "../views/temp.jsx";
+
 const url = "https://server.cozyb.me"
 const socket = io("https://server.cozyb.me", {
     autoConnect: false
 });
 const router = createBrowserRouter([
+    {
+        path: "/chat-redirect",
+        element: < TemporaryPage />
+    },
     {
         path: "/",
         element: < LoginPage url={url} />,
@@ -42,7 +48,7 @@ const router = createBrowserRouter([
             }
 
             return null
-        },  
+        },
         children: [
             {
                 path: "/chat",
